@@ -68,7 +68,8 @@ docker compose down
 docker compose build php
 docker compose up -d
 ```
-
+## JIRA
+- [JIRA](https://bail-pilote.atlassian.net/jira/software/projects/BP/boards/1) : gestion des tâches, suivi de projet, backlog
 ---
 
 ## Architecture de l'application
@@ -131,6 +132,7 @@ L'application est organisée en **4 lots** :
 - Protection XSS, CSRF, injection SQL
 - HTTPS via certificat **Let's Encrypt**
 - Conformité **RGPD** (consentement cookies, droits d'accès/suppression, déclaration CNIL)
+- création du .env.local 
 
 ---
 
