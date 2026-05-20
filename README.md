@@ -1,4 +1,5 @@
-Installation du projet Symfony (docker) BailPilote
+# Installation du projet Symfony (docker) BailPilote
+
 ## Prérequis
 - Docker
 - Docker Compose
@@ -14,8 +15,8 @@ bailPilote_mailhog
 
 1. Cloner le dépôt
 
-git clone https://github.com/CamileGhastine/EspritDeco.git
-cd EspritDeco
+git clone https://github.com/CamileGhastine/BailPilote.git
+cd BailPilote
 
 2. Démarrer les conteneurs
 
@@ -37,14 +38,14 @@ DATABASE_URL="mysql://user:pwd@mysql:3306/bailPilote?serverVersion=8.0.32&charse
 MAILER_DSN=smtp://mailhog:1025
 MESSENGER_TRANSPORT_DSN=sync://
 
-
-5.JIRA https://bail-pilote.atlassian.net/jira/software/projects/BP/boards/1
-
-
-Commandes utiles
+## Commandes utiles
 Accéder au conteneur PHP :
 docker exec -it bailPilote_php sh
 Voir les logs :
 docker-compose logs -f
 Arrêter les conteneurs :
 docker-compose down
+
+
+## Suivi de projet
+Lien Jira : https://bail-pilote.atlassian.net/jira/software/projects/BP/boards/1
