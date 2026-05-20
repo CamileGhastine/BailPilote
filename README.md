@@ -1,164 +1,50 @@
-# bailPilote
-
-> Application web de gestion locative — version 1.0  
-> Livraison prévue : 3 juillet 2026
-
----
-
-## Présentation
-
-**BailPilote** (anciennement *Simplex-immo*) est une application de gestion immobilière locative **gratuite**, conçue pour les propriétaires-bailleurs qui souhaitent gérer leurs biens sans passer par une agence.
-
-Elle automatise les tâches récurrentes (quittances de loyer, réévaluation annuelle, déclaration d'impôts, génération de contrats…) et centralise la communication entre bailleur et locataire.
-
----
-
-## Stack technique
-
-| Composant | Technologie | Version |
-|---|---|---|
-| Backend | PHP | 8.4 |
-| Framework | Symfony | 7.4 (LTS) |
-| Base de données | MySQL | — |
-| Serveur web | Nginx | — |
-| Conteneurisation | Docker | — |
-
----
-
+Installation du projet Symfony (docker) BailPilote
 ## Prérequis
+- Docker
+- Docker Compose
 
-- [Docker](https://www.docker.com/) et [Docker Compose](https://docs.docker.com/compose/) installés
-- Git
+## Conteneurs utilisés
+bailPilote_php
+bailPilote_nginx
+bailPilote_mysql
+bailPilote_phpmyadmin
+bailPilote_mailhog
 
----
+## Étapes d’installation
 
-## Installation
+1. Cloner le dépôt
 
-### 1. Cloner le dépôt
+git clone https://github.com/CamileGhastine/EspritDeco.git
+cd EspritDeco
 
-```bash
-git clone  https://github.com/CamileGhastine/BailPilote.git
-cd bailpilote
-```
+2. Démarrer les conteneurs
 
-### 2. Corriger les permissions (indispensable)
+Vérifier que les ports ne sont pas déjà utilisés
 
-Le montage de volume Docker écrase les permissions du dossier hôte. À exécuter une seule fois après le clonage :
+docker-compose up -d --build
 
-```bash
-sudo chown -R $(id -u):$(id -g) ./app
-```
+3. Installer les dépendances Symfony
 
-### 3. Démarrer les conteneurs
+docker exec -it bailPilote_php composer install
 
-```bash
-docker compose up -d
-```
+4. Configurer l’environnement
+Créer le fichier .env.local :
 
-L'application est ensuite accessible sur [http://localhost](http://localhost).
+cp .env .env.local
+Vérifier la configuration de la base de données :
 
----
+DATABASE_URL="mysql://user:pwd@mysql:3306/bailPilote?serverVersion=8.0.32&charset=utf8mb4"
+MAILER_DSN=smtp://mailhog:1025
+MESSENGER_TRANSPORT_DSN=sync://
 
-## Rebuild de l'image PHP
 
-À effectuer après toute modification du `Dockerfile` ou des dépendances :
+5.JIRA https://bail-pilote.atlassian.net/jira/software/projects/BP/boards/1
 
-```bash
-docker compose down
-docker compose build php
-docker compose up -d
-```
-## JIRA
-- [JIRA](https://bail-pilote.atlassian.net/jira/software/projects/BP/boards/1) : gestion des tâches, suivi de projet, backlog
----
 
-## Architecture de l'application
-
-L'application est organisée en **4 lots** :
-
-### Lot 1 — Vitrine
-- Page d'accueil publique (actualités immobilières, présentation des services)
-- Espace éditorial (articles, tutoriels, F.A.Q.)
-- Enregistrement et connexion (confirmation par mail, token 24h)
-- Forum communautaire *(optionnel)*
-
-### Lot 2 — Espace bailleur
-- Tableau de bord avec vue sur tous les biens
-- Gestion des biens immobiliers (création, modification, photos, DPE/GES…)
-- Gestion des locataires (ajout, invitation par mail, IRL affiché)
-- Génération automatique de documents (quittances, contrats de bail, états des lieux)
-- Messagerie bailleur ↔ locataire
-- Calendrier et notifications d'actions (réévaluation de loyer, rappels…)
-- Espace documents (téléversement / téléchargement)
-- Question juridique intégrée
-
-### Lot 3 — Espace locataire
-- Vue lecture seule des informations du bien
-- Messagerie locataire ↔ bailleur
-- Téléchargement des quittances et documents
-- Calendrier (échéances loyer, anniversaire bail…)
-- Notifications d'actions
-
-### Lot 4 — Back-office administration
-- Espace rédactionnel (gestion articles, actualités, F.A.Q.) — accessible aux éditorialistes
-- Gestion des rôles (admin, éditorialiste, juriste)
-
----
-
-## Rôles utilisateurs
-
-| Rôle | Accès |
-|---|---|
-| **Promeneur** | Contenu éditorial public, forum (anonyme) |
-| **Bailleur** | Espace bailleur complet après inscription |
-| **Locataire** | Espace locataire (invité par le bailleur) |
-| **Rédacteur** | Création de contenu éditorial (back-office) |
-| **Admin** | Gestion complète de l'application et des rôles |
-
----
-
-## Services tiers (API)
-
-- **INSEE** — Indice de référence des loyers (IRL)
-- **impots.gouv.fr** — Vérification des avis d'imposition
-- Référentiel des zones tendues
-- Référentiel des communes en encadrement des loyers
-
----
-
-## Sécurité
-
-- Mots de passe hashés, protection brute-force
-- Protection XSS, CSRF, injection SQL
-- HTTPS via certificat **Let's Encrypt**
-- Conformité **RGPD** (consentement cookies, droits d'accès/suppression, déclaration CNIL)
-- création du .env.local 
-
----
-
-## Compatibilité
-
-**Navigateurs** : Chrome 70+, Firefox 60+, Safari 14+, Opera 51+, Edge 90+  
-**Appareils** : Mobile, tablette, ordinateur portable et bureau (responsive, bonnes pratiques W3C)
-
----
-
-## Évolutions prévues
-
-| Proposition | Priorité |
-|---|---|
-| Forum communautaire | Très fortement conseillé |
-| Messagerie temps réel (protocole Mercure) | Non indispensable |
-| Architecture Symfony API + React (mobile-ready) | Fortement conseillé |
-
----
-
-## Livrables
-
-- ✅ Application web fonctionnelle
-- ✅ Code source (propriété du client)
-- ✅ Documentation technique
-
----
-
-*BailPilote © 2026*
+Commandes utiles
+Accéder au conteneur PHP :
+docker exec -it bailPilote_php sh
+Voir les logs :
+docker-compose logs -f
+Arrêter les conteneurs :
+docker-compose down
