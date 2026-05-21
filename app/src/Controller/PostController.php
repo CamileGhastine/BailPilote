@@ -19,6 +19,7 @@ final class PostController extends AbstractController
             $request->query->getInt('page', 1),
             9
         );
+            
 
         return $this->render('post/index.html.twig', [
             'pagination' => $pagination,

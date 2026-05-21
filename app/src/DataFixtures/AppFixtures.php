@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Entity\Media;
+use App\Entity\Image;
 use App\Entity\Post;
 use App\Enum\ArticleType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -43,11 +43,8 @@ class AppFixtures extends Fixture
                 ->setUpdatedAt(new \DateTimeImmutable("-$i days"))
                 ->setPublishedAt(new \DateTimeImmutable("-$i days"));
 
-            $media = new Media();
+            $media = new Image();
             $media->setTitle('Image — ' . $title)
-                ->setType('image')
-                ->setPath(null)
-                ->setUrl(null)
                 ->setPost($post);
 
             $manager->persist($post);
