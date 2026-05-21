@@ -1,1 +1,29 @@
-<nav>navbar</nav>
+<nav class="site-nav">
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a href="/actualites" class="nav-link {% if app.request.pathInfo starts with '/actualites' %}nav-link--active{% endif %}">
+                Actualités
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/articles" class="nav-link {% if app.request.pathInfo starts with '/articles' %}nav-link--active{% endif %}">
+                Articles &amp; tutoriels
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/forum" class="nav-link {% if app.request.pathInfo starts with '/forum' %}nav-link--active{% endif %}">
+                Forum
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/tarifs" class="nav-link {% if app.request.pathInfo starts with '/tarifs' %}nav-link--active{% endif %}">
+                Nos tarifs
+            </a>
+        </li>
+        <li class="nav-item nav-item--auth">
+            <a href="/connexion" class="nav-link {% if app.request.pathInfo starts with '/connexion' %}nav-link--active{% endif %}">
+                Connexion / Enregistrement
+            </a>
+        </li>
+    </ul>
+</nav>

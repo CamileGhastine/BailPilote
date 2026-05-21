@@ -1,7 +1,89 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}BailPilote — Simplifiez la gestion de vos baux{% endblock %}
+{% block title %}Bailpilote : gérez vos biens immobiliers facilement{% endblock %}
 
-{% block main %}
+{% block content %}
+
+<div class="page-layout">
+
+    {# ====== COLONNE PRINCIPALE : Présentation des services ====== #}
+    <section class="services">
+
+        {# Bloc 1 : image gauche, texte droite #}
+        <article class="service-block">
+            <h2 class="service-block__title">Pourquoi ne plus passer par une agence&nbsp;?</h2>
+            <div class="service-block__body">
+                <div class="service-block__image">
+                    <img src="/assets/images/service-agence.jpg" alt="Illustration - se passer d'une agence" width="163" height="140">
+                </div>
+                <div class="service-block__text">
+                    <p>
+                        Gérer votre bien immobilier en direct vous permet d'économiser les frais d'agence,
+                        de garder le contrôle sur la sélection des locataires et de simplifier toutes vos
+                        démarches administratives grâce à nos outils en ligne.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        {# Bloc 2 : texte gauche, image droite #}
+        <article class="service-block service-block--reverse">
+            <h2 class="service-block__title">Bailpilote comment ça marche&nbsp;?</h2>
+            <div class="service-block__body">
+                <div class="service-block__text">
+                    <p>
+                        Créez votre compte gratuitement, ajoutez vos biens et gérez l'ensemble de vos
+                        locations depuis votre tableau de bord : quittances de loyer, suivi des paiements,
+                        gestion des contrats et bien plus encore.
+                    </p>
+                </div>
+                <div class="service-block__image">
+                    <img src="/assets/images/service-fonctionnement.jpg" alt="Illustration - fonctionnement de Bailpilote" width="163" height="140">
+                </div>
+            </div>
+        </article>
+
+        {# Bloc 3 : image gauche, texte droite #}
+        <article class="service-block">
+            <h2 class="service-block__title">Les avantages de Bailpilote</h2>
+            <div class="service-block__body">
+                <div class="service-block__image">
+                    <img src="/assets/images/service-avantages.jpg" alt="Illustration - avantages de Bailpilote" width="163" height="140">
+                </div>
+                <div class="service-block__text">
+                    <p>
+                        Une plateforme tout-en-un, intuitive et accessible 24h/24. Zéro commission,
+                        des modèles de documents conformes à la loi, un support réactif et une communauté
+                        de propriétaires pour échanger vos bonnes pratiques.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+    </section>
+
+    {# ====== COLONNE LATÉRALE : Actualités ====== #}
+    <aside class="sidebar-actualites">
+        <h2 class="sidebar-actualites__title">Actualité</h2>
+
+        <ul class="actualites-list">
+            {% for i in 1..9 %}
+            <li class="actualite-item">
+                <a href="/actualites/{{ i }}" class="actualite-item__link">
+                    <img
+                        src="/assets/images/actu-{{ i }}.jpg"
+                        alt="Extrait d'article"
+                        class="actualite-item__img"
+                        width="48"
+                        height="38"
+                    >
+                    <span class="actualite-item__label">Extrait d'article</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+</div>
 
 {% endblock %}

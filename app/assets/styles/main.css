@@ -1,2 +1,96 @@
-main {
+/* =====================================================
+   MAIN.CSS — Reset & base & layout
+   ===================================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.9rem;
+    color: #222;
+    background-color: #f0f0f0;
+}
+
+a {
+    color: #1a5fa8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    background-color: #ddd;
+    border: 1px solid #bbb;
+}
+
+/* Layout principal */
+.page-layout {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    align-items: stretch;
+}
+
+/* Section services */
+.services {
+    flex: 1 1 0;
+    min-width: 0;
+    border: 2px solid #cc2222;
+    background-color: #fff;
+}
+
+.service-block {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.service-block:last-child {
+    border-bottom: none;
+}
+
+.service-block__title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 0.75rem;
+    color: #111;
+    text-align: center;
+}
+
+.service-block__body {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.service-block__image {
+    flex-shrink: 0;
+}
+
+.service-block__image img {
+    width: 163px;
+    height: 140px;
+    object-fit: cover;
+}
+
+.service-block__text {
+    flex: 1;
+    min-width: 0;
+}
+
+.service-block__text p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.85rem;
+    color: #333;
+    border: 1px solid #bbb;
+    padding: 0.5rem;
+    min-height: 100px;
 }

@@ -1,27 +1,20 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-    
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Simplex-immo : gérez vos biens immobiliers facilement{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+</head>
+<body>
+    {% include 'shared/header.html.twig' %}
+    {% include 'shared/nav.html.twig' %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {{ include('shared/header.html.twig') }}
-        {{ include('shared/nav.html.twig') }}
-        {% block body %}
-            <main>
-                {% block main %}Main{% endblock %}
-            </main>
-            <aside>
-                {% block aside %}Aside{% endblock %}
-            </aside>
-        {% endblock %}
-        {{ include('shared/footer.html.twig') }}
-    </body>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'shared/footer.html.twig' %}
+
+</body>
 </html>

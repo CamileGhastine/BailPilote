@@ -1,2 +1,55 @@
-nav {
+/* =====================================================
+NAV.CSS
+   ===================================================== */
+
+.site-nav {
+    background-color: #fff;
+    border-top: 2px solid #3a7d44;
+    border-bottom: 2px solid #3a7d44;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.nav-item {
+    flex: 1;
+    border-right: 1px solid rgba(58, 125, 68, 0.3);
+}
+
+/* Suppression des bordures extérieures gauche et droite */
+.nav-item:first-child {
+    border-left: none;
+}
+
+.nav-item:last-child {
+    border-right: none;
+}
+
+.nav-item--auth {
+    flex: 1.5;
+}
+
+.nav-link {
+    display: block;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #3a7d44;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(58, 125, 68, 0.08);
+}
+
+.nav-link--active {
+    background-color: rgba(58, 125, 68, 0.12);
+    font-weight: 600;
 }

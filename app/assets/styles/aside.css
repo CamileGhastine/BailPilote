@@ -1,2 +1,69 @@
-aside {
+/* =====================================================
+   ASIDE.CSS — Sidebar actualités
+   ===================================================== */
+
+.sidebar-actualites {
+    flex: 0 0 220px;
+    width: 220px;
+    border: 2px solid #1a5fa8;
+    background-color: #fff;
+    align-self: stretch;
+}
+
+.sidebar-actualites__title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0;
+    padding: 0.6rem 0.75rem;
+    color: #111;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.actualites-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.actualite-item {
+    border-bottom: 1px solid #ddd;
+}
+
+.actualite-item:last-child {
+    border-bottom: none;
+}
+
+.actualite-item__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    text-decoration: none;
+    color: #222;
+    transition: background-color 0.12s ease;
+}
+
+.actualite-item__link:hover {
+    background-color: #eef4ff;
+    text-decoration: none;
+}
+
+.actualite-item__img {
+    flex-shrink: 0;
+    width: 48px;
+    height: 38px;
+    object-fit: cover;
+    background-color: #e0e0e0;
+    border: 1px solid #bbb;
+}
+
+.actualite-item__label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #222;
+    background-color: #f0f0f0;
+    padding: 0.3rem 0.5rem;
+    flex: 1;
 }

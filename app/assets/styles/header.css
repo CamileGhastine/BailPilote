@@ -1,2 +1,75 @@
-header {
+/* =====================================================
+   HEADER.CSS
+   ===================================================== */
+
+.site-header {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1100px;
+    margin-inline: auto;
+    padding: 0.75rem 1rem 0.5rem;
+}
+
+.header-logo {
+    flex-shrink: 0;
+}
+
+.header-logo img {
+    width: 150px;
+    height: 104px;
+    object-fit: contain;
+}
+
+.header-brand {
+    flex: 1;
+    text-align: center;
+}
+
+.site-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+}
+
+.header-cta {
+    flex-shrink: 0;
+}
+
+.btn-cta {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 2px solid #e07020;
+    color: #e07020;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background-color: #fff;
+    border-radius: 3px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+}
+
+.btn-cta:hover {
+    background-color: #e07020;
+    color: #fff;
+    text-decoration: none;
+}
+
+.header-tagline {
+    text-align: center;
+    padding: 0 1rem 0.75rem;
+    border-top: 1px solid #eee;
+}
+
+.header-tagline p {
+    margin: 0.5rem 0 0;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #222;
 }
