@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $registration_token = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $registration_token_expires_at = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -153,6 +156,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRegistrationToken(?string $registration_token): static
     {
         $this->registration_token = $registration_token;
+
+        return $this;
+    }
+
+    public function getRegistrationTokenExpiresAt(): ?\DateTime
+    {
+        return $this->registration_token_expires_at;
+    }
+
+    public function setRegistrationTokenExpiresAt(?\DateTime $registration_token_expires_at): static
+    {
+        $this->registration_token_expires_at = $registration_token_expires_at;
 
         return $this;
     }
