@@ -22,7 +22,7 @@ cd BailPilote
 
 Vérifier que les ports ne sont pas déjà utilisés
 
-docker-compose up -d --build
+docker compose up -d --build
 
 3. Installer les dépendances Symfony
 
@@ -42,9 +42,9 @@ MESSENGER_TRANSPORT_DSN=sync://
 Accéder au conteneur PHP :
 docker exec -it bailPilote_php sh
 Voir les logs :
-docker-compose logs -f
+docker compose logs -f
 Arrêter les conteneurs :
-docker-compose down
+docker compose down
 
 
 ## Suivi de projet
