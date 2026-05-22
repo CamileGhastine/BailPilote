@@ -18,17 +18,21 @@ bailPilote_mailhog
 git clone https://github.com/CamileGhastine/BailPilote.git
 cd BailPilote
 
-2. Démarrer les conteneurs
+2. Corriger les permissions (indispensable)
+Le montage de volume Docker écrase les permissions du dossier hôte. À exécuter une seule fois après le clonage :
+sudo chown -R $(id -u):$(id -g) ./app
+
+3. Démarrer les conteneurs
 
 Vérifier que les ports ne sont pas déjà utilisés
 
 docker-compose up -d --build
 
-3. Installer les dépendances Symfony
+4. Installer les dépendances Symfony
 
 docker exec -it bailPilote_php composer install
 
-4. Configurer l’environnement
+5. Configurer l’environnement
 Créer le fichier .env.local :
 
 cp .env .env.local
