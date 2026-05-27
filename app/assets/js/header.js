@@ -1,1 +1,1 @@
-// Gestion du header
+import '../styles/header.css';
