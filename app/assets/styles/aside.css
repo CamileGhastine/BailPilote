@@ -1,13 +1,12 @@
 /* =====================================================
-ASIDE.CSS — Sidebar actualités
+   ASIDE.CSS — Sidebar actualités — Responsive
    ===================================================== */
 
+/* Mobile : sidebar en dessous, pleine largeur */
 .sidebar-actualites {
-    flex: 0 0 220px;
-    width: 220px;
+    width: 100%;
     border: 2px solid #1a5fa8;
     background-color: #fff;
-    align-self: stretch;
 }
 
 .sidebar-actualites__title {
@@ -21,18 +20,22 @@ ASIDE.CSS — Sidebar actualités
     border-bottom: 1px solid #ddd;
 }
 
+/* Mobile : items en grille 2 colonnes */
 .actualites-list {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 .actualite-item {
     border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
 
-.actualite-item:last-child {
-    border-bottom: none;
+.actualite-item:nth-child(2n) {
+    border-right: none;
 }
 
 .actualite-item__link {
@@ -47,7 +50,6 @@ ASIDE.CSS — Sidebar actualités
 
 .actualite-item__link:hover {
     background-color: #eef4ff;
-    text-decoration: none;
 }
 
 .actualite-item__img {
@@ -60,10 +62,31 @@ ASIDE.CSS — Sidebar actualités
 }
 
 .actualite-item__label {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: bold;
     color: #222;
     background-color: #f0f0f0;
     padding: 0.3rem 0.5rem;
     flex: 1;
+}
+
+/* ---- Desktop (≥ 768px) : sidebar verticale à droite ---- */
+@media (min-width: 768px) {
+    .sidebar-actualites {
+        flex: 0 0 220px;
+        width: 220px;
+        align-self: stretch;
+    }
+
+    .actualites-list {
+        display: block;
+    }
+
+    .actualite-item {
+        border-right: none;
+    }
+
+    .actualite-item:last-child {
+        border-bottom: none;
+    }
 }

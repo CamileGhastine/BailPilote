@@ -1,5 +1,5 @@
 /* =====================================================
-   MAIN.CSS — Reset & base & layout
+MAIN.CSS — Reset & base & layout — Responsive
    ===================================================== */
 
 *, *::before, *::after {
@@ -12,6 +12,19 @@ body {
     font-size: 0.9rem;
     color: #222;
     background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-layout {
+    flex: 1;
 }
 
 a {
@@ -31,24 +44,24 @@ img {
     border: 1px solid #bbb;
 }
 
-/* Layout principal */
+/* ---- Layout principal — Mobile first ---- */
 .page-layout {
     display: flex;
+    flex-direction: column;
     gap: 4px;
     margin: 0;
-    align-items: stretch;
+    flex: 1;
 }
 
 /* Section services */
 .services {
-    flex: 1 1 0;
-    min-width: 0;
+    width: 100%;
     border: 2px solid #cc2222;
     background-color: #fff;
 }
 
 .service-block {
-    padding: 1rem 1.25rem;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid #ddd;
 }
 
@@ -64,10 +77,12 @@ img {
     text-align: center;
 }
 
+/* Mobile : image au-dessus du texte */
 .service-block__body {
     display: flex;
-    gap: 1rem;
-    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
 }
 
 .service-block__image {
@@ -75,14 +90,14 @@ img {
 }
 
 .service-block__image img {
-    width: 163px;
-    height: 140px;
+    width: 100%;
+    max-width: 163px;
+    height: auto;
     object-fit: cover;
 }
 
 .service-block__text {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
 }
 
 .service-block__text p {
@@ -92,5 +107,41 @@ img {
     color: #333;
     border: 1px solid #bbb;
     padding: 0.5rem;
-    min-height: 100px;
+    min-height: 80px;
+}
+
+/* ---- Desktop (≥ 768px) ---- */
+@media (min-width: 768px) {
+    .page-layout {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .services {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .service-block {
+        padding: 1rem 1.25rem;
+    }
+
+    .service-block__body {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .service-block__image img {
+        width: 163px;
+        height: 140px;
+    }
+
+    .service-block__text {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .service-block__text p {
+        min-height: 100px;
+    }
 }
