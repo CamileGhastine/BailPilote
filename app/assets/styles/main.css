@@ -1,5 +1,5 @@
 /* =====================================================
-MAIN.CSS — Reset & base & layout — Responsive
+   MAIN.CSS — Reset & base & layout — Responsive
    ===================================================== */
 
 *, *::before, *::after {
@@ -23,10 +23,6 @@ main {
     flex-direction: column;
 }
 
-.page-layout {
-    flex: 1;
-}
-
 a {
     color: #1a5fa8;
     text-decoration: none;
@@ -48,9 +44,9 @@ img {
 .page-layout {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 4px;
     margin: 0;
-    flex: 1;
 }
 
 /* Section services */
@@ -110,7 +106,7 @@ img {
     min-height: 80px;
 }
 
-/* ---- Desktop (≥ 768px) ---- */
+/* ---- Tablette/Desktop (≥ 768px) ---- */
 @media (min-width: 768px) {
     .page-layout {
         flex-direction: row;
