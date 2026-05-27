@@ -1,4 +1,7 @@
-@import 'bootswatch.css';
+@import './bootswatch.css';
+@import './header.css';
+@import './nav.css';
+@import './main.css';
+@import './aside.css';
+@import './footer.css';
 
-body {   
-}

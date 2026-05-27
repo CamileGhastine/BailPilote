@@ -1,28 +1,20 @@
-<div class="position-relative bg-white" style="height: 155px;">
+<header class="site-header" style="background-image: url('{{ asset('image/HeaderImage.jpeg') }}')">
+    <div class="header-top">
 
-    <!-- Image de fond -->
-    <img src="{{ asset('image/HeaderImage.jpeg') }}" 
-        class="w-100 h-100 object-fit-cover position-absolute top-0 start-0" 
-        alt="">
+        <div class="header-logo">
+            <img src="{{ asset('image/logo.png') }}" alt="Logo Bailpilote" width="150" height="104">
+        </div>
 
-    <!-- Overlay sombre -->
-    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div>
+        <div class="header-brand">
+            <h1 class="site-title">Bailpilote.fr</h1>
+        </div>
 
-    <!-- Contenu par dessus -->
-    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
-
-        <!-- Logo à gauche -->
-        <img src="{{ asset('image/logo.png') }}" 
-            height="100" 
-            class="ms-4"
-            alt="BailPilote">
-
-        <!-- Texte centré -->
-        <div class="text-white text-center mx-auto ">
-        <h1 class="">BailPilote.fr</h1>
-        <p class="lead mt-3 d-none d-sm-block">Pourquoi payer ce que vous pouvez ne pas faire à la place d'un autre ?</p>
+        <div class="header-cta">
+            <a href="/demo" class="btn-cta">Voir une démonstration</a>
         </div>
 
     </div>
-
-</div>
+    <div class="header-tagline">
+        <p>Pourquoi payer pour ce que vous pouvez ne pas faire à la place d'un autre&nbsp;?</p>
+    </div>
+</header>
