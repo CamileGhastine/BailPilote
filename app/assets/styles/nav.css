@@ -3,10 +3,9 @@
    ===================================================== */
 
 .site-nav {
-    background-color: #fff;
     border-top: 2px solid #3a7d44;
     border-bottom: 2px solid #3a7d44;
-    overflow-x: auto; /* évite le débordement */
+    overflow-x: auto;
 }
 
 /* Mobile : colonne */
@@ -20,7 +19,7 @@
 }
 
 .nav-item {
-    border-bottom: 1px solid rgba(58, 125, 68, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .nav-item:last-child {
@@ -31,23 +30,26 @@
     flex: 1.5;
 }
 
-.nav-link {
+.nav-link,
+.nav-link:visited {
     display: block;
     padding: 0.6rem 1rem;
     text-align: center;
     font-size: 0.85rem;
-    color: #3a7d44;
+    color: #fff;
     text-decoration: none;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .nav-link:hover {
-    background-color: rgba(58, 125, 68, 0.08);
+    color: #fff;
+    text-decoration: none;
 }
 
 .nav-link--active {
-    background-color: rgba(58, 125, 68, 0.12);
+    background-color: rgba(255, 255, 255, 0.15);
     font-weight: 600;
+    text-decoration: none;
 }
 
 /* Desktop (≥ 768px) : ligne */
@@ -59,7 +61,7 @@
     .nav-item {
         flex: 1;
         border-bottom: none;
-        border-right: 1px solid rgba(58, 125, 68, 0.3);
+        border-right: none;
     }
 
     .nav-item:first-child {
