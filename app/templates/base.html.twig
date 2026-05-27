@@ -11,12 +11,12 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     {% include 'shared/header.html.twig' %}
     {% include 'shared/nav.html.twig' %}
 
-    <main>
+    <main class="flex-grow-1">
         {% block content %}{% endblock %}
     </main>
 
