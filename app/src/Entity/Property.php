@@ -24,7 +24,7 @@ class Property
     private ?float $area = null;
 
     #[ORM\Column]
-    private ?int $number_of_romms = null;
+    private ?int $number_of_rooms = null;
 
     #[ORM\Column]
     private ?int $number_of_bedrooms = null;
@@ -93,14 +93,14 @@ class Property
         return $this;
     }
 
-    public function getNumberOfRomms(): ?int
+    public function getNumberOfRooms(): ?int
     {
-        return $this->number_of_romms;
+        return $this->number_of_rooms;
     }
 
-    public function setNumberOfRomms(int $number_of_romms): static
+    public function setNumberOfRooms(int $number_of_rooms): static
     {
-        $this->number_of_romms = $number_of_romms;
+        $this->number_of_rooms = $number_of_rooms;
 
         return $this;
     }
