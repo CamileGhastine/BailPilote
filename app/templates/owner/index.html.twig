@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+{% block title %}Espace bailleur{% endblock %}
+
+{% block body %}
+{# <div class="container"> #}
+    <div class="row my-4">
+        <div class="col-9">        
+            <div class="d-flex justify-content-around">
+                <a class="btn btn-primary btn-lg  text-decoration-none  rounded-2" href="">Mon compte</a>
+                <h1>Mon espace bailleur</h1>
+                <div class="d-flex gap-2 align-items-center bg-primary bg-opacity-10 px-2 rounded">
+                    <span class="fs-6">Ajouter un bien</span>
+                    <a class="text-decoration-none  fs-4 bg-primary bg-opacity-10 rounded-4" href="">➕</a>
+                </div>
+            </div>
+            <div class="container mt-4 d-flex flex-wrap gap-4 justify-content-center">
+                {% for i in 1..5 %}
+                <div class="card border-primary border rounded-2  overflow-hidden" style="width: 45%;">
+                    <div class="card-header bg-primary text-white fw-bold">Nom de bien</div>
+                    <div class="card-body bg-primary bg-opacity-10 ">
+                        <div class="d-flex">
+                            <div>
+                                <img class="" src="{{asset('image/logo.png')}}" alt="photo de bien" style="width:25% ;">
+                                <ul class="list-unstyled mt-4">
+                                    <li>Type: </li>
+                                    <li>surface: </li>
+                                    <li>energie: </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="text-nowrap">
+                                    <p class="fs-3 d-inline">✉️</p><span>5</span>
+                                </div>
+                                <div class="text-nowrap">
+                                    <p class="fs-3 d-inline">🔔</p><span>5</span>
+                                </div>
+                                <div class="text-nowrap">
+                                    <p class="fs-3 d-inline">📁</p><span>5</span>
+                                </div>
+                                <div class="text-nowrap">
+                                    <a class="btn btn-primary py-1 my-2 text-decoration-none  rounded-2 mt-4" href="">Gérer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>               
+
+        <div class="col-3 text-center d-flex flex-column gap-4">
+            <div class=" d-flex justify-content-around border border-success rounded-1 bg-primary bg-opacity-10 ">
+                <p class="my-auto">Messagerie</p>
+                <div>
+                    <p class="fs-1 d-inline">✉️</p>
+                    <span>5</span>
+                </div>
+            </div>
+            <div class=" d-flex justify-content-around border border-warning rounded-1 bg-primary bg-opacity-10">
+                <p class="my-auto">Notification</p>
+                <div>
+                    <p class="fs-1 d-inline">🔔</p>
+                    <span>5</span>
+                </div>
+            </div>
+            <div class=" d-flex justify-content-around border border-info rounded-1 bg-primary bg-opacity-10">
+                <p class="my-auto">Documents</p>
+                <div>
+                    <p class="fs-1 d-inline">📁</p>
+                    <span>5</span>
+                </div>
+            </div>
+            <div class=" bg-primary bg-opacity-10 border border-info rounded-1">
+                <p class="my-auto py-2 px-4 text-start">Mon compte</p>
+
+            </div>
+            <div class="d-flex justify-content-center border border-info rounded-1 gap-4 bg-primary bg-opacity-10">
+                <p class="my-auto py-2">Ma compta générale  </p>
+                    
+                    <a class="text-decoration-none fs-6 bg-primary bg-opacity-10 rounded-5 align-self-center " href="">➕</a>
+               
+            </div>
+        </div>
+    </div>
+{# </div> #}
+{% endblock %}

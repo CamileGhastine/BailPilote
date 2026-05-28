@@ -6,13 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class TemplateController extends AbstractController
+class OwnerController extends AbstractController
 {
-    #[Route('/', name: 'app_template_index')]
+    #[Route('/owner', name: 'app_owner_index')]
     public function index(): Response
     {
-        return $this->render('template/index.html.twig', [
-        
-        ]);
+        return $this->render('owner/index.html.twig');
     }
 }
