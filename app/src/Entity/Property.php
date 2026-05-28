@@ -12,52 +12,52 @@ class Property
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private string $title;
 
     #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    private string $type;
 
     #[ORM\Column]
-    private ?float $area = null;
+    private float $area;
 
-    #[ORM\Column]
-    private ?int $number_of_rooms = null;
+    #[ORM\Column(name: 'numberOfRooms')]
+    private int $numberOfRooms;
 
-    #[ORM\Column]
-    private ?int $number_of_bedrooms = null;
+    #[ORM\Column(name: 'numberOfBedrooms')]
+    private int $numberOfBedrooms;
 
-    #[ORM\Column(length: 255)]
-    private ?string $eco_note = null;
+    #[ORM\Column(name: 'ecoNote', length: 255)]
+    private string $ecoNote;
 
-    #[ORM\Column(length: 255)]
-    private ?string $ges_note = null;
+    #[ORM\Column(name: 'gesNote', length: 255)]
+    private string $gesNote;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    private string $description;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $criteria = null;
+    private string $criteria;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    private string $status;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Address $address = null;
+    private Address $address;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Owner $owner = null;
+    private Owner $owner;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -69,7 +69,7 @@ class Property
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
@@ -81,7 +81,7 @@ class Property
         return $this;
     }
 
-    public function getArea(): ?float
+    public function getArea(): float
     {
         return $this->area;
     }
@@ -93,55 +93,55 @@ class Property
         return $this;
     }
 
-    public function getNumberOfRooms(): ?int
+    public function getNumberOfRooms(): int
     {
-        return $this->number_of_rooms;
+        return $this->numberOfRooms;
     }
 
-    public function setNumberOfRooms(int $number_of_rooms): static
+    public function setNumberOfRooms(int $numberOfRooms): static
     {
-        $this->number_of_rooms = $number_of_rooms;
+        $this->numberOfRooms = $numberOfRooms;
 
         return $this;
     }
 
-    public function getNumberOfBedrooms(): ?int
+    public function getNumberOfBedrooms(): int
     {
-        return $this->number_of_bedrooms;
+        return $this->numberOfBedrooms;
     }
 
-    public function setNumberOfBedrooms(int $number_of_bedrooms): static
+    public function setNumberOfBedrooms(int $numberOfBedrooms): static
     {
-        $this->number_of_bedrooms = $number_of_bedrooms;
+        $this->numberOfBedrooms = $numberOfBedrooms;
 
         return $this;
     }
 
-    public function getEcoNote(): ?string
+    public function getEcoNote(): string
     {
-        return $this->eco_note;
+        return $this->ecoNote;
     }
 
-    public function setEcoNote(string $eco_note): static
+    public function setEcoNote(string $ecoNote): static
     {
-        $this->eco_note = $eco_note;
+        $this->ecoNote = $ecoNote;
 
         return $this;
     }
 
-    public function getGesNote(): ?string
+    public function getGesNote(): string
     {
-        return $this->ges_note;
+        return $this->gesNote;
     }
 
-    public function setGesNote(string $ges_note): static
+    public function setGesNote(string $gesNote): static
     {
-        $this->ges_note = $ges_note;
+        $this->gesNote = $gesNote;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -153,7 +153,7 @@ class Property
         return $this;
     }
 
-    public function getCriteria(): ?string
+    public function getCriteria(): string
     {
         return $this->criteria;
     }
@@ -165,7 +165,7 @@ class Property
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -177,7 +177,7 @@ class Property
         return $this;
     }
 
-    public function getAddress(): ?Address
+    public function getAddress(): Address
     {
         return $this->address;
     }
@@ -189,12 +189,12 @@ class Property
         return $this;
     }
 
-    public function getOwner(): ?Owner
+    public function getOwner(): Owner
     {
         return $this->owner;
     }
 
-    public function setOwner(?Owner $owner): static
+    public function setOwner(Owner $owner): static
     {
         $this->owner = $owner;
 

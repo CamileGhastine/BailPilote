@@ -11,32 +11,32 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column]
-    private ?int $number = null;
+    private int $number;
 
     #[ORM\Column(length: 255)]
-    private ?string $street = null;
+    private string $street;
 
-    #[ORM\Column]
-    private ?int $zip_code = null;
+    #[ORM\Column(name: 'zipCode')]
+    private int $zipCode;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $additional_address_info = null;
+    #[ORM\Column(name: 'addressInfo', length: 255, nullable: true)]
+    private ?string $addressInfo = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $city = null;
+    private string $city;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $country = null;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getNumber(): ?int
+    public function getNumber(): int
     {
         return $this->number;
     }
@@ -48,7 +48,7 @@ class Address
         return $this;
     }
 
-    public function getStreet(): ?string
+    public function getStreet(): string
     {
         return $this->street;
     }
@@ -60,31 +60,31 @@ class Address
         return $this;
     }
 
-    public function getZipCode(): ?int
+    public function getZipCode(): int
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
-    public function setZipCode(int $zip_code): static
+    public function setZipCode(int $zipCode): static
     {
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
 
         return $this;
     }
 
-    public function getAdditionalAddressInfo(): ?string
+    public function getAddressInfo(): string
     {
-        return $this->additional_address_info;
+        return $this->addressInfo;
     }
 
-    public function setAdditionalAddressInfo(?string $additional_address_info): static
+    public function setAddressInfo(string $addressInfo): static
     {
-        $this->additional_address_info = $additional_address_info;
+        $this->addressInfo = $addressInfo;
 
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -96,12 +96,12 @@ class Address
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getCountry(): string
     {
         return $this->country;
     }
 
-    public function setCountry(?string $country): static
+    public function setCountry(string $country): static
     {
         $this->country = $country;
 

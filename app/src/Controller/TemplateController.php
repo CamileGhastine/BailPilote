@@ -12,7 +12,7 @@ final class TemplateController extends AbstractController
     public function index(): Response
     {
         return $this->render('template/index.html.twig', [
-          
+        
         ]);
     }
 }

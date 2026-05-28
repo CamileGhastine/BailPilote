@@ -11,30 +11,30 @@ class Image
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private string $title;
 
     #[ORM\Column(length: 255)]
-    private ?string $path = null;
+    private string $path;
 
     #[ORM\Column(length: 255)]
-    private ?string $alt = null;
+    private string $alt;
 
     #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    private string $type;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Property $property = null;
+    private Property $property;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -46,7 +46,7 @@ class Image
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -58,7 +58,7 @@ class Image
         return $this;
     }
 
-    public function getAlt(): ?string
+    public function getAlt(): string
     {
         return $this->alt;
     }
@@ -70,7 +70,7 @@ class Image
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
@@ -82,12 +82,12 @@ class Image
         return $this;
     }
 
-    public function getProperty(): ?Property
+    public function getProperty(): Property
     {
         return $this->property;
     }
 
-    public function setProperty(?Property $property): static
+    public function setProperty(Property $property): static
     {
         $this->property = $property;
 
