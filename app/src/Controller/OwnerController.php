@@ -13,4 +13,12 @@ class OwnerController extends AbstractController
     {
         return $this->render('owner/index.html.twig');
     }
+    
+    #[Route('/owner/show', name: 'app_owner_show')]
+    public function show(): Response
+    {
+        return $this->render('owner/show.html.twig', [
+            'controller_name' => 'OwnerController',
+        ]);
+    }
 }
