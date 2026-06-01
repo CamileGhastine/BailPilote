@@ -14,7 +14,7 @@ class TenantHandler
     )
     {}
 
-    public function createTenantForm(FormInterface $form, Lease $lease): void
+    public function createTenantFromForm(FormInterface $form, Lease $lease): void
     {}
     
         $user = new User();
