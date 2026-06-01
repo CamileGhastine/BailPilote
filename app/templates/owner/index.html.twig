@@ -5,18 +5,47 @@
 <div class="row my-4">
 
     {# Colonne principale #}
-    <div class="col-12 col-sm-9">
+    <div class="col-12 col-lg-9">
 
-        <div class="d-flex flex-column flex-md-row gap-3 justify-content-around">
-            <a class="btn btn-primary btn-lg text-decoration-none rounded-2 order-2 order-md-1" href="">Mon compte</a>
-            <h1 class="text-center order-1 order-md-2">Mon espace bailleur</h1>
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-around">
+            <a class="btn btn-primary btn-lg text-decoration-none rounded-2 order-2 order-sm-1" href="">Mon compte</a>
+            <h1 class="text-center order-1 order-sm-2">Mon espace bailleur</h1>
             <div class="d-flex gap-2 align-items-center justify-content-center bg-primary bg-opacity-10 px-2 rounded order-3">
                 <span class="fs-6">Ajouter un bien</span>
                 <a class="text-decoration-none fs-4 bg-primary bg-opacity-10 rounded-4" href="">➕</a>
             </div>
         </div>
 
-        {# Navigation mobile uniquement — entre le header et les biens #}
+        {# Navigation sm/md — barre horizontale sous le header, au-dessus des biens #}
+        <div class="d-none d-sm-flex d-lg-none flex-wrap gap-2 gap-md-4 mt-3 justify-content-center">
+            <div class="d-flex justify-content-around border border-success rounded-1 bg-primary bg-opacity-10 p-2">
+                <a href="" class="btn position-relative text-decoration-none">
+                    ✉️
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9</span>
+                </a>
+            </div>
+            <div class="d-flex justify-content-around border border-warning rounded-1 bg-primary bg-opacity-10 p-2">
+                <a href="" class="btn position-relative text-decoration-none">
+                    🔔
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">8</span>
+                </a>
+            </div>
+            <div class="d-flex justify-content-around border border-info rounded-1 bg-primary bg-opacity-10 p-2">
+                <a href="" class="btn position-relative text-decoration-none">
+                    📁
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">13</span>
+                </a>
+            </div>
+            <div class="bg-primary bg-opacity-10 border border-info rounded-1 px-3 py-2">
+                <p class="my-auto">Mon compte</p>
+            </div>
+            <div class="d-flex justify-content-center border border-info rounded-1 gap-3 bg-primary bg-opacity-10 p-2">
+                <p class="my-auto">Ma compta générale</p>
+                <a class="text-decoration-none fs-6 bg-primary bg-opacity-10 rounded-5 align-self-center" href="">➕</a>
+            </div>
+        </div>
+
+        {# Navigation mobile uniquement (xs) — collapsible navbar #}
         <nav class="navbar bg-primary rounded-2 mt-3 d-sm-none" data-bs-theme="dark">
             <div class="container-fluid">
                 <span class="navbar-brand fw-bold">Navigation</span>
@@ -26,16 +55,22 @@
                 <div class="collapse navbar-collapse" id="asideMenuMobile">
                     <div class="d-flex flex-wrap gap-2 w-100 py-2">
                         <div class="d-flex justify-content-around border border-success rounded-1 bg-primary bg-opacity-10 p-2">
-                            <p class="my-auto">Messagerie</p>
-                            <div><p class="fs-1 d-inline">✉️</p><span>5</span></div>
+                            <a href="" class="btn position-relative text-decoration-none">
+                                ✉️
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9</span>
+                            </a>
                         </div>
                         <div class="d-flex justify-content-around border border-warning rounded-1 bg-primary bg-opacity-10 p-2">
-                            <p class="my-auto">Notification</p>
-                            <div><p class="fs-1 d-inline">🔔</p><span>5</span></div>
+                            <a href="" class="btn position-relative text-decoration-none">
+                                🔔
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">8</span>
+                            </a>
                         </div>
                         <div class="d-flex justify-content-around border border-info rounded-1 bg-primary bg-opacity-10 p-2">
-                            <p class="my-auto">Documents</p>
-                            <div><p class="fs-1 d-inline">📁</p><span>5</span></div>
+                            <a href="" class="btn position-relative text-decoration-none">
+                                📁
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">13</span>
+                            </a>>
                         </div>
                         <div class="bg-primary bg-opacity-10 border border-info rounded-1 px-3 py-2">
                             <p class="my-auto">Mon compte</p>
@@ -68,14 +103,21 @@
                                 </div>
                                 <div>
                                     <div class="text-nowrap">
-                                        <p class="fs-3 d-inline">✉️</p><span>5</span>
+                                        <p class="d-inline position-relative ">
+                                            <span class="fs-2">✉️</span>
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ">3</span>
+                                        </p>
                                     </div>
                                     <div class="text-nowrap">
-                                        <p class="fs-3 d-inline">🔔</p><span>5</span>
-                                    </div>
+                                        <p class="d-inline position-relative ">
+                                            <span class="fs-2">🔔</span>
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ">0</span>
+                                        </p>                                    </div>
                                     <div class="text-nowrap">
-                                        <p class="fs-3 d-inline">📁</p><span>5</span>
-                                    </div>
+                                        <p class="d-inline position-relative ">
+                                            <span class="fs-2">📁</span>
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ">2</span>
+                                        </p>                                    </div>
                                     <div class="text-nowrap">
                                         <a class="btn btn-primary py-1 my-2 text-decoration-none rounded-2 mt-4"
                                             href="">Gérer</a>
@@ -91,24 +133,30 @@
 
     </div>
 
-    {# Sidebar sm+ uniquement — colonne droite #}
-    <div class="col-sm-3 d-none d-sm-flex flex-column gap-4  rounded-2 align-self-start py-2 px-2" data-bs-theme="dark">
+    {# Sidebar lg+ uniquement — colonne droite #}
+    <div class="col-lg-3 d-none d-lg-flex flex-column gap-4 rounded-2 align-self-start py-2 px-2" data-bs-theme="dark">
         <div class="d-flex justify-content-around border border-success rounded-1 bg-primary bg-opacity-10 p-2">
-            <p class="my-auto">Messagerie</p>
-            <div><p class="fs-1 d-inline">✉️</p><span>5</span></div>
+            <a href="" class="btn position-relative text-decoration-none text-start text-dark">
+                Messages ✉️
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9</span>
+            </a>
         </div>
         <div class="d-flex justify-content-around border border-warning rounded-1 bg-primary bg-opacity-10 p-2">
-            <p class="my-auto">Notification</p>
-            <div><p class="fs-1 d-inline">🔔</p><span>5</span></div>
+            <a href="" class="btn position-relative text-decoration-none text-start text-dark">
+                Notifications 🔔
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">8</span>
+            </a>
         </div>
         <div class="d-flex justify-content-around border border-info rounded-1 bg-primary bg-opacity-10 p-2">
-            <p class="my-auto">Documents</p>
-            <div><p class="fs-1 d-inline">📁</p><span>5</span></div>
+            <a href="" class="text btn position-relative text-decoration-none text-start text-dark">
+                Documents 📁
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">13</span>
+            </a>
         </div>
-        <div class="bg-primary bg-opacity-10 border border-info rounded-1 px-3 py-2">
+        <div class="bg-primary bg-opacity-10 border border-info rounded-1 px-3 py-2 text-center">
             <p class="my-auto">Mon compte</p>
         </div>
-        <div class="d-flex justify-content-center border border-info rounded-1 gap-3 bg-primary bg-opacity-10 p-2">
+        <div class="d-flex justify-content-center border border-info rounded-1 gap-3 bg-primary bg-opacity-10 p-2 ">
             <p class="my-auto">Ma compta générale</p>
             <a class="text-decoration-none fs-6 bg-primary bg-opacity-10 rounded-5 align-self-center" href="">➕</a>
         </div>
