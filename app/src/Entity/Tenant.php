@@ -17,7 +17,8 @@ class Tenant
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
-    #[ORM\OneToOne(mappedBy: 'tenant', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'tenant')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Lease $lease = null;
 
     public function getId(): int
@@ -42,15 +43,11 @@ class Tenant
         return $this->lease;
     }
 
-    public function setLease(Lease $lease): static
+    public function setLease(?Lease $lease): static
     {
-        // set the owning side of the relation if necessary
-        if ($lease->getTenant() !== $this) {
-            $lease->setTenant($this);
-        }
-
         $this->lease = $lease;
 
         return $this;
     }
+
 }
