@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Property;
 use App\Form\PropertyType;
 use App\Repository\OwnerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PropertyController extends AbstractController
 {
@@ -18,6 +21,8 @@ class PropertyController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         OwnerRepository $ownerRepository,
+        SluggerInterface $slugger,
+        #[Autowire('%property_images_directory%')] string $imagesDirectory,
     ): Response {
         $property = new Property();
 
@@ -33,6 +38,28 @@ class PropertyController extends AbstractController
             }
 
             $property->setOwner($owner);
+
+            foreach ($form->get('images') as $imageForm) {
+                /** @var Image $image */
+                $image = $imageForm->getData();
+                $file = $imageForm->get('file')->getData();
+
+                if (!$file) {
+                    $property->removeImage($image);
+                    continue;
+                }
+
+                $mimeType = $file->getMimeType() ?? 'image/jpeg';
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeName = $slugger->slug($originalName);
+                $newFilename = $safeName . '-' . uniqid() . '.' . $file->guessExtension();
+
+                $file->move($imagesDirectory, $newFilename);
+
+                $image->setPath('uploads/properties/' . $newFilename);
+                $image->setTitle($originalName);
+                $image->setType($mimeType);
+            }
 
             $entityManager->persist($property);
             $entityManager->flush();

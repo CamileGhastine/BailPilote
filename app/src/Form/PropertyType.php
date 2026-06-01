@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Property;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,19 +23,16 @@ class PropertyType extends AbstractType
                 'label' => 'Nom du bien',
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => 2,
-                        'max' => 64,
-                    ]),
+                    new Assert\Length(min: 2, max: 64),
                 ],
             ])
             ->add('type', ChoiceType::class, [
                 'label' => 'Type de bien',
                 'choices' => [
-                    'Maison' => 'maison',
-                    'Appartement' => 'appartement',
-                    'Terrain' => 'terrain',
-                    'Parking' => 'parking',
+                    'Maison'      => Property::TYPE_MAISON,
+                    'Appartement' => Property::TYPE_APPARTEMENT,
+                    'Terrain'     => Property::TYPE_TERRAIN,
+                    'Parking'     => Property::TYPE_PARKING,
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -50,6 +48,7 @@ class PropertyType extends AbstractType
             ])
             ->add('numberOfRooms', IntegerType::class, [
                 'label' => 'Nombre de pièces',
+                'attr' => ['type' => 'text', 'inputmode' => 'numeric', 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'')"],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\PositiveOrZero(),
@@ -57,6 +56,7 @@ class PropertyType extends AbstractType
             ])
             ->add('numberOfBedrooms', IntegerType::class, [
                 'label' => 'Nombre de chambres',
+                'attr' => ['type' => 'text', 'inputmode' => 'numeric', 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'')"],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\PositiveOrZero(),
@@ -65,13 +65,13 @@ class PropertyType extends AbstractType
             ->add('ecoNote', ChoiceType::class, [
                 'label' => 'Note énergie',
                 'choices' => [
-                    'A' => 'A',
-                    'B' => 'B',
-                    'C' => 'C',
-                    'D' => 'D',
-                    'E' => 'E',
-                    'F' => 'F',
-                    'G' => 'G',
+                    'A' => Property::ECO_A,
+                    'B' => Property::ECO_B,
+                    'C' => Property::ECO_C,
+                    'D' => Property::ECO_D,
+                    'E' => Property::ECO_E,
+                    'F' => Property::ECO_F,
+                    'G' => Property::ECO_G,
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -80,13 +80,13 @@ class PropertyType extends AbstractType
             ->add('gesNote', ChoiceType::class, [
                 'label' => 'Note gestion (GES)',
                 'choices' => [
-                    'A' => 'A',
-                    'B' => 'B',
-                    'C' => 'C',
-                    'D' => 'D',
-                    'E' => 'E',
-                    'F' => 'F',
-                    'G' => 'G',
+                    'A' => Property::ECO_A,
+                    'B' => Property::ECO_B,
+                    'C' => Property::ECO_C,
+                    'D' => Property::ECO_D,
+                    'E' => Property::ECO_E,
+                    'F' => Property::ECO_F,
+                    'G' => Property::ECO_G,
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -95,9 +95,9 @@ class PropertyType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'label' => 'Statut',
                 'choices' => [
-                    'Disponible' => 'disponible',
-                    'Loué' => 'loue',
-                    'En travaux' => 'en_travaux',
+                    'Disponible' => Property::STATUS_DISPONIBLE,
+                    'Loué'       => Property::STATUS_LOUE,
+                    'En travaux' => Property::STATUS_EN_TRAVAUX,
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -112,15 +112,15 @@ class PropertyType extends AbstractType
             ->add('criteria', ChoiceType::class, [
                 'label' => 'Critères / Équipements',
                 'choices' => [
-                    'Cuisine aménagée' => 'cuisine_amenagee',
-                    'Balcon/Terrasse' => 'balcon_terrasse',
-                    'Garage/Box' => 'garage_box',
-                    'Ascenseur' => 'ascenseur',
-                    'Chauffage central' => 'chauffage_central',
-                    'Climatisation' => 'climatisation',
-                    'Parking' => 'parking',
-                    'Jardin' => 'jardin',
-                    'Piscine' => 'piscine',
+                    'Cuisine aménagée'  => Property::CRITERIA_CUISINE_AMENAGEE,
+                    'Balcon/Terrasse'   => Property::CRITERIA_BALCON_TERRASSE,
+                    'Garage/Box'        => Property::CRITERIA_GARAGE_BOX,
+                    'Ascenseur'         => Property::CRITERIA_ASCENSEUR,
+                    'Chauffage central' => Property::CRITERIA_CHAUFFAGE_CENTRAL,
+                    'Climatisation'     => Property::CRITERIA_CLIMATISATION,
+                    'Parking'           => Property::CRITERIA_PARKING,
+                    'Jardin'            => Property::CRITERIA_JARDIN,
+                    'Piscine'           => Property::CRITERIA_PISCINE,
                 ],
                 'multiple' => true,
                 'expanded' => true,
@@ -128,6 +128,14 @@ class PropertyType extends AbstractType
             ])
             ->add('address', AddressType::class, [
                 'label' => 'Adresse',
+            ])
+            ->add('images', CollectionType::class, [
+                'entry_type' => ImageType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+                'label' => false,
             ])
         ;
     }

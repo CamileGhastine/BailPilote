@@ -3,12 +3,41 @@
 namespace App\Entity;
 
 use App\Repository\PropertyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 class Property
 {
+    const STATUS_DISPONIBLE = 'disponible';
+    const STATUS_LOUE       = 'loue';
+    const STATUS_EN_TRAVAUX = 'en_travaux';
+
+    const TYPE_MAISON      = 'maison';
+    const TYPE_APPARTEMENT = 'appartement';
+    const TYPE_TERRAIN     = 'terrain';
+    const TYPE_PARKING     = 'parking';
+
+    const ECO_A = 'A';
+    const ECO_B = 'B';
+    const ECO_C = 'C';
+    const ECO_D = 'D';
+    const ECO_E = 'E';
+    const ECO_F = 'F';
+    const ECO_G = 'G';
+
+    const CRITERIA_CUISINE_AMENAGEE  = 'cuisine_amenagee';
+    const CRITERIA_BALCON_TERRASSE   = 'balcon_terrasse';
+    const CRITERIA_GARAGE_BOX        = 'garage_box';
+    const CRITERIA_ASCENSEUR         = 'ascenseur';
+    const CRITERIA_CHAUFFAGE_CENTRAL = 'chauffage_central';
+    const CRITERIA_CLIMATISATION     = 'climatisation';
+    const CRITERIA_PARKING           = 'parking';
+    const CRITERIA_JARDIN            = 'jardin';
+    const CRITERIA_PISCINE           = 'piscine';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -54,6 +83,14 @@ class Property
 
     #[ORM\OneToOne(mappedBy: 'property', cascade: ['persist', 'remove'])]
     private ?Lease $lease = null;
+
+    #[ORM\OneToMany(mappedBy: 'property', targetEntity: Image::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -217,6 +254,28 @@ class Property
         }
 
         $this->lease = $lease;
+
+        return $this;
+    }
+
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        $this->images->removeElement($image);
 
         return $this;
     }

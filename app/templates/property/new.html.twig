@@ -7,7 +7,7 @@
 
     <h1 class="mb-4">Ajouter un bien immobilier</h1>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
 
         <div class="card mb-4 border-primary rounded-2 shadow-sm">
             <div class="card-header">
@@ -199,6 +199,44 @@
             </div>
         </div>
 
+        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+            <div class="card-header">
+                Photos du bien
+            </div>
+
+            <div class="card-body" id="images-container"
+                 data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
+                 data-index="{{ form.images|length }}">
+
+                {% for image in form.images %}
+                    <div class="image-entry border rounded p-3 mb-3">
+                        <div class="mb-2">
+                            {{ form_label(image.file) }}
+                            {{ form_widget(image.file, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(image.file) }}
+                        </div>
+                        <div class="mb-2">
+                            {{ form_label(image.alt) }}
+                            {{ form_widget(image.alt, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(image.alt) }}
+                        </div>
+                        <div class="form-check mb-2">
+                            {{ form_widget(image.isPrincipal, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(image.isPrincipal, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                        </div>
+                        <button type="button" class="btn btn-danger btn-sm remove-image">Supprimer</button>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-secondary btn-sm" id="add-image">
+                    + Ajouter une photo
+                </button>
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-primary mb-3">
             Enregistrer le bien
         </button>
@@ -206,4 +244,31 @@
     {{ form_end(form) }}
 
 </div>
+
+<script>
+    function initImageCollection() {
+        const container = document.getElementById('images-container');
+        const addBtn = document.getElementById('add-image');
+        if (!container || !addBtn) return;
+
+        let index = parseInt(container.dataset.index);
+
+        addBtn.addEventListener('click', () => {
+            const prototype = container.dataset.prototype.replace(/__name__/g, index);
+            const div = document.createElement('div');
+            div.className = 'image-entry border rounded p-3 mb-3';
+            div.innerHTML = prototype + '<button type="button" class="btn btn-danger btn-sm remove-image mt-2">Supprimer</button>';
+            container.appendChild(div);
+            index++;
+        });
+
+        container.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-image')) {
+                e.target.closest('.image-entry').remove();
+            }
+        });
+    }
+
+    document.addEventListener('turbo:load', initImageCollection);
+</script>
 {% endblock %}

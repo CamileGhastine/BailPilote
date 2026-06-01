@@ -17,6 +17,7 @@ class AddressType extends AbstractType
         $builder
             ->add('number', IntegerType::class, [
                 'label' => 'Numéro',
+                'attr' => ['type' => 'text', 'inputmode' => 'numeric', 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'')"],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Positive(),
