@@ -17,6 +17,10 @@ class Tenant
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
+    #[ORM\ManyToOne(inversedBy: 'tenant')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Lease $lease = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -33,4 +37,17 @@ class Tenant
 
         return $this;
     }
+
+    public function getLease(): ?Lease
+    {
+        return $this->lease;
+    }
+
+    public function setLease(?Lease $lease): static
+    {
+        $this->lease = $lease;
+
+        return $this;
+    }
+
 }

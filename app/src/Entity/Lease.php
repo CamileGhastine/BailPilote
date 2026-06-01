@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LeaseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,21 @@ class Lease
 
     #[ORM\Column(type: Types::TEXT)]
     private string $guarantor;
+
+    #[ORM\OneToOne(inversedBy: 'lease', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Property $property;
+
+    /**
+     * @var Collection<int, Tenant>
+     */
+    #[ORM\OneToMany(targetEntity: Tenant::class, mappedBy: 'lease')]
+    private Collection $tenant;
+
+    public function __construct()
+    {
+        $this->tenant = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -153,4 +170,47 @@ class Lease
 
         return $this;
     }
+
+    public function getProperty(): ?Property
+    {
+        return $this->property;
+    }
+
+    public function setProperty(Property $property): static
+    {
+        $this->property = $property;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tenant>
+     */
+    public function getTenant(): Collection
+    {
+        return $this->tenant;
+    }
+
+    public function addTenant(Tenant $tenant): static
+    {
+        if (!$this->tenant->contains($tenant)) {
+            $this->tenant->add($tenant);
+            $tenant->setLease($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTenant(Tenant $tenant): static
+    {
+        if ($this->tenant->removeElement($tenant)) {
+            // set the owning side to null (unless already changed)
+            if ($tenant->getLease() === $this) {
+                $tenant->setLease(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

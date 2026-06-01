@@ -52,6 +52,9 @@ class Property
     #[ORM\JoinColumn(nullable: false)]
     private Owner $owner;
 
+    #[ORM\OneToOne(mappedBy: 'property', cascade: ['persist', 'remove'])]
+    private ?Lease $lease = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -197,6 +200,23 @@ class Property
     public function setOwner(Owner $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getLease(): ?Lease
+    {
+        return $this->lease;
+    }
+
+    public function setLease(Lease $lease): static
+    {
+        // set the owning side of the relation if necessary
+        if ($lease->getProperty() !== $this) {
+            $lease->setProperty($this);
+        }
+
+        $this->lease = $lease;
 
         return $this;
     }
