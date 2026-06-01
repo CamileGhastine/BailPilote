@@ -45,6 +45,10 @@ class Lease
     #[ORM\JoinColumn(nullable: false)]
     private ?Property $property = null;
 
+    #[ORM\OneToOne(inversedBy: 'lease', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tenant $tenant = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -166,6 +170,18 @@ class Lease
     public function setProperty(Property $property): static
     {
         $this->property = $property;
+
+        return $this;
+    }
+
+    public function getTenant(): ?Tenant
+    {
+        return $this->tenant;
+    }
+
+    public function setTenant(Tenant $tenant): static
+    {
+        $this->tenant = $tenant;
 
         return $this;
     }
