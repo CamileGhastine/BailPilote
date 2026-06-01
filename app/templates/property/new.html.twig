@@ -1,0 +1,209 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un bien{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h1 class="mb-4">Ajouter un bien immobilier</h1>
+
+    {{ form_start(form) }}
+
+        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+            <div class="card-header">
+                Informations du bien
+            </div>
+
+            <div class="card-body">
+
+                <div class="mb-3">
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.title) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.type) }}
+                    {{ form_widget(form.type, {
+                        'attr': {
+                            'class': 'form-select'
+                        }
+                    }) }}
+                    {{ form_errors(form.type) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.area) }}
+                    {{ form_widget(form.area, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.area) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.numberOfRooms) }}
+                    {{ form_widget(form.numberOfRooms, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.numberOfRooms) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.numberOfBedrooms) }}
+                    {{ form_widget(form.numberOfBedrooms, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.numberOfBedrooms) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.status) }}
+                    {{ form_widget(form.status, {
+                        'attr': {
+                            'class': 'form-select'
+                        }
+                    }) }}
+                    {{ form_errors(form.status) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.ecoNote) }}
+                    {{ form_widget(form.ecoNote, {
+                        'attr': {
+                            'class': 'form-select'
+                        }
+                    }) }}
+                    {{ form_errors(form.ecoNote) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.gesNote) }}
+                    {{ form_widget(form.gesNote, {
+                        'attr': {
+                            'class': 'form-select'
+                        }
+                    }) }}
+                    {{ form_errors(form.gesNote) }}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+            <div class="card-header">
+                Critères / équipements
+            </div>
+
+            <div class="card-body">
+                {{ form_errors(form.criteria) }}
+
+                <div class="row">
+                    {% for criterion in form.criteria %}
+                        <div class="col-md-4 mb-2">
+                            <div class="form-check">
+                                {{ form_widget(criterion, {
+                                    'attr': {
+                                        'class': 'form-check-input'
+                                    }
+                                }) }}
+
+                                {{ form_label(criterion, null, {
+                                    'label_attr': {
+                                        'class': 'form-check-label'
+                                    }
+                                }) }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+            <div class="card-header">
+                Adresse du bien
+            </div>
+
+            <div class="card-body">
+
+                <div class="mb-3">
+                    {{ form_label(form.address.number) }}
+                    {{ form_widget(form.address.number, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.number) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.street) }}
+                    {{ form_widget(form.address.street, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.street) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.zipCode) }}
+                    {{ form_widget(form.address.zipCode, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.zipCode) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.city) }}
+                    {{ form_widget(form.address.city, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.city) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.addressInfo) }}
+                    {{ form_widget(form.address.addressInfo, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.addressInfo) }}
+                </div>
+
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-3">
+            Enregistrer le bien
+        </button>
+
+    {{ form_end(form) }}
+
+</div>
+{% endblock %}

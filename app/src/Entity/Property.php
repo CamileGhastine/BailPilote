@@ -38,8 +38,8 @@ class Property
     #[ORM\Column(type: Types::TEXT)]
     private string $description;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private string $criteria;
+    #[ORM\Column(type: Types::JSON)]
+    private array $criteria = [];
 
     #[ORM\Column(length: 255)]
     private string $status;
@@ -156,12 +156,12 @@ class Property
         return $this;
     }
 
-    public function getCriteria(): string
+    public function getCriteria(): array
     {
         return $this->criteria;
     }
 
-    public function setCriteria(string $criteria): static
+    public function setCriteria(array $criteria): static
     {
         $this->criteria = $criteria;
 
