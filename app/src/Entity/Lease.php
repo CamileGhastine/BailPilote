@@ -41,6 +41,10 @@ class Lease
     #[ORM\Column(type: Types::TEXT)]
     private string $guarantor;
 
+    #[ORM\OneToOne(inversedBy: 'lease', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Property $property = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -150,6 +154,18 @@ class Lease
     public function setGuarantor(string $guarantor): static
     {
         $this->guarantor = $guarantor;
+
+        return $this;
+    }
+
+    public function getProperty(): ?Property
+    {
+        return $this->property;
+    }
+
+    public function setProperty(Property $property): static
+    {
+        $this->property = $property;
 
         return $this;
     }
