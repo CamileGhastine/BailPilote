@@ -30,7 +30,10 @@ class ImageType extends AbstractType
             ])
             ->add('alt', TextType::class, [
                 'label' => 'Description (alt)',
-                'required' => false,
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Ce champ est obligatoire.'),
+                ],
             ])
             ->add('isPrincipal', CheckboxType::class, [
                 'label' => 'Photo principale',

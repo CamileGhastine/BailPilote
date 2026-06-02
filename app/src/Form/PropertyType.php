@@ -41,9 +41,19 @@ class PropertyType extends AbstractType
             ->add('area', NumberType::class, [
                 'label' => 'Surface (m²)',
                 'scale' => 2,
+                'attr' => [
+                    'type' => 'text',
+                    'inputmode' => 'decimal',
+                    'oninput' => "this.value = this.value
+                        .replace(',', '.')
+                        .replace(/[^0-9.]/g, '')
+                        .replace(/(\..*)\./g, '$1')",
+                ],
                 'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Positive(),
+                    new Assert\NotBlank([
+                        'message' => 'La surface est obligatoire.',
+                    ]),
+                    
                 ],
             ])
             ->add('numberOfRooms', IntegerType::class, [

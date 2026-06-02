@@ -10,11 +10,11 @@
     {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
 
         <div class="card mb-4 border-primary rounded-2 shadow-sm">
-            <div class="card-header">
-                Informations du bien
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Informations du bien</h3>
             </div>
 
-            <div class="card-body">
+            <div class="card-body bg-primary bg-opacity-10">
 
                 <div class="mb-3">
                     {{ form_label(form.title) }}
@@ -110,11 +110,11 @@
         </div>
 
         <div class="card mb-4 border-primary rounded-2 shadow-sm">
-            <div class="card-header">
-                Critères / équipements
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Critères / équipements</h3>
             </div>
 
-            <div class="card-body">
+            <div class="card-body bg-primary bg-opacity-10">
                 {{ form_errors(form.criteria) }}
 
                 <div class="row">
@@ -140,11 +140,11 @@
         </div>
 
         <div class="card mb-4 border-primary rounded-2 shadow-sm">
-            <div class="card-header">
-                Adresse du bien
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Adresse du bien</h3>
             </div>
 
-            <div class="card-body">
+            <div class="card-body bg-primary bg-opacity-10">
 
                 <div class="mb-3">
                     {{ form_label(form.address.number) }}
@@ -200,11 +200,11 @@
         </div>
 
         <div class="card mb-4 border-primary rounded-2 shadow-sm">
-            <div class="card-header">
-                Photos du bien
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0 ">Photos du bien</h3>
             </div>
 
-            <div class="card-body" id="images-container"
+            <div class="card-body bg-primary bg-opacity-10" id="images-container"
                  data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
                  data-index="{{ form.images|length }}">
 
@@ -246,7 +246,7 @@
 </div>
 
 <script>
-    function initImageCollection() {
+    (function () {
         const container = document.getElementById('images-container');
         const addBtn = document.getElementById('add-image');
         if (!container || !addBtn) return;
@@ -267,8 +267,6 @@
                 e.target.closest('.image-entry').remove();
             }
         });
-    }
-
-    document.addEventListener('turbo:load', initImageCollection);
+    })();
 </script>
 {% endblock %}

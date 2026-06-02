@@ -19,8 +19,8 @@ class Image
     #[ORM\Column(length: 255)]
     private string $path;
 
-    #[ORM\Column(length: 255)]
-    private string $alt;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $alt = null;
 
     #[ORM\Column(length: 255)]
     private string $type;
@@ -61,12 +61,12 @@ class Image
         return $this;
     }
 
-    public function getAlt(): string
+    public function getAlt(): ?string
     {
         return $this->alt;
     }
 
-    public function setAlt(string $alt): static
+    public function setAlt(?string $alt): static
     {
         $this->alt = $alt;
 

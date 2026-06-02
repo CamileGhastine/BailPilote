@@ -12,17 +12,20 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PropertyController extends AbstractController
 {
     #[Route('/property/new', name: 'app_property_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
         OwnerRepository $ownerRepository,
         SluggerInterface $slugger,
         #[Autowire('%property_images_directory%')] string $imagesDirectory,
+        #[Autowire('%property_images_web_path%')] string $imagesWebPath,
     ): Response {
         $property = new Property();
 
@@ -34,7 +37,7 @@ class PropertyController extends AbstractController
 
             if (!$owner) {
                 $this->addFlash('danger', 'Aucun profil propriétaire trouvé pour votre compte.');
-                return $this->redirectToRoute('app_property_new');
+                return $this->redirectToRoute('app_home');
             }
 
             $property->setOwner($owner);
@@ -56,7 +59,7 @@ class PropertyController extends AbstractController
 
                 $file->move($imagesDirectory, $newFilename);
 
-                $image->setPath('uploads/properties/' . $newFilename);
+                $image->setPath($imagesWebPath . '/' . $newFilename);
                 $image->setTitle($originalName);
                 $image->setType($mimeType);
             }
@@ -66,7 +69,7 @@ class PropertyController extends AbstractController
 
             $this->addFlash('success', 'Le bien immobilier a bien été créé.');
 
-            return $this->redirectToRoute('app_property_new');
+            return $this->redirectToRoute('app_owner_show');
         }
 
         return $this->render('property/new.html.twig', [
