@@ -29,42 +29,50 @@ class OwnerController extends AbstractController
         'property' => $property,
     ]);
     }
+    #[Route('/owner/property/{propertyId}/tenant/save', name: 'app_owner_save_tenant')]
+#[Route('/owner/property/{propertyId}/tenant/{tenantId}/save', name: 'app_owner_edit_tenant')]
+public function saveTenant(
+    Request $request,
+    TenantHandler $tenantHandler,
+    PropertyRepository $propertyRepository,
+    TenantRepository $tenantRepository,
+    int $propertyId,
+    ?int $tenantId = null,
+): Response {
+    $property = $propertyRepository->find($propertyId);
+    $lease = $property->getLease();
+
+    if (!$lease) {
+        $this->addFlash('danger', 'Aucun bail associé à cette propriété.');
+        return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
+    }
+
+    $tenant = $tenantId
+        ? $tenantRepository->find($tenantId)
+        : new Tenant();
+
+    $form = $this->createForm(TenantType::class, $tenant);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        if ($tenantId) {
+            $tenantHandler->updateTenantFromForm($form, $tenant);
+            $this->addFlash('success', 'Locataire mis à jour avec succès.');
+        } else {
+            $tenantHandler->createTenantFromForm($form, $lease);
+            $this->addFlash('success', 'Locataire ajouté avec succès.');
+        }
+
+        return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
+    }
+
+    return $this->render('owner/save_tenant.html.twig', [
+        'property' => $property,
+        'form' => $form,
+        'tenant' => $tenant,
+        'isEdit' => $tenantId !== null,
+    ]);
     
-    #[Route('/owner/property/{propertyId}/tenant/{tenantId}/save', name: 'app_owner_save_tenant', defaults: ['tenantId' => null])]
-    public function saveTenant(
-        Request $request,
-        TenantHandler $tenantHandler,
-        PropertyRepository $propertyRepository,
-        TenantRepository $tenantRepository,
-        int $propertyId,
-        ?int $tenantId,
-        ): Response
-        
-        {   
-        $property = $propertyRepository->find($propertyId);
-        $lease = $property->getLease();
-
-        if (!$lease) {
-            $this->addFlash('danger', 'Aucun bail associé à cette propriété.');
-            return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
-        }
-        
-        // Création ou modification selon si tenantId est fourni
-        $tenant = $tenantId ? $tenantRepository->find($tenantId) : new Tenant();
-        $form = $this->createForm(TenantType::class, $tenant);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $tenantHandler->saveTenantFromForm($form, $lease, $tenant);
-            
-            $this->addFlash('success', $tenantId ? 'Locataire mis à jour avec succès.' : 'Locataire ajouté avec succès.');
-            return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
-        }
-
-        return $this->render('owner/add_tenant.html.twig', [
-            'property' => $property,
-            'form' => $form,
-            'tenant' => $tenant,
-        ]);
+    
     }
 }
