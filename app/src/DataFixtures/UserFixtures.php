@@ -22,6 +22,7 @@ class UserFixtures extends Fixture
                 'lastname'  => 'Dupont',
                 'roles'     => ['ROLE_USER'],
                 'password'  => 'Password123456$',
+                'phone'     => '0600000001',    
             ],
             [
                 'email'     => 'admin@test.com',
@@ -29,6 +30,7 @@ class UserFixtures extends Fixture
                 'lastname'  => 'Martin',
                 'roles'     => ['ROLE_ADMIN', 'ROLE_USER'],
                 'password'  => 'Password123456$',
+                'phone'     => '0600000002',
             ],
         ];
 
@@ -39,6 +41,7 @@ class UserFixtures extends Fixture
             $user->setLastname($data['lastname']);
             $user->setRoles($data['roles']);
             $user->setIsVerified(true);
+            $user->setPhone($data['phone']);
             $user->setPassword($this->hasher->hashPassword($user, $data['password']));
 
             $manager->persist($user);
