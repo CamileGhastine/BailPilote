@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\Property;
 use App\Entity\Tenant;
 use App\Form\TenantType;
 use App\Repository\PropertyRepository;
+use App\Repository\TenantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,34 +30,41 @@ class OwnerController extends AbstractController
     ]);
     }
     
-    #[Route('/owner/property/{id}/add-tenant', name: 'app_owner_add_tenant')]
-    public function addTenant(
-        Property $property,
+    #[Route('/owner/property/{propertyId}/tenant/{tenantId}/save', name: 'app_owner_save_tenant', defaults: ['tenantId' => null])]
+    public function saveTenant(
         Request $request,
         TenantHandler $tenantHandler,
+        PropertyRepository $propertyRepository,
+        TenantRepository $tenantRepository,
+        int $propertyId,
+        ?int $tenantId,
         ): Response
-    {   
+        
+        {   
+        $property = $propertyRepository->find($propertyId);
         $lease = $property->getLease();
 
         if (!$lease) {
             $this->addFlash('danger', 'Aucun bail associé à cette propriété.');
             return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
         }
-
-        $tenant = new Tenant();
+        
+        // Création ou modification selon si tenantId est fourni
+        $tenant = $tenantId ? $tenantRepository->find($tenantId) : new Tenant();
         $form = $this->createForm(TenantType::class, $tenant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tenantHandler->createTenantFromForm($form, $lease);
+            $tenantHandler->saveTenantFromForm($form, $lease, $tenant);
             
-            $this->addFlash('success', 'Locataire ajouté avec succès.');
+            $this->addFlash('success', $tenantId ? 'Locataire mis à jour avec succès.' : 'Locataire ajouté avec succès.');
             return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
         }
 
         return $this->render('owner/add_tenant.html.twig', [
             'property' => $property,
-            'form' => $form
+            'form' => $form,
+            'tenant' => $tenant,
         ]);
     }
 }
