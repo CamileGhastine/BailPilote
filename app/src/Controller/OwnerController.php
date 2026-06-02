@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Property;
 use App\Entity\Tenant;
 use App\Form\TenantType;
+use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,13 +20,16 @@ class OwnerController extends AbstractController
     }
     
     #[Route('/owner/show', name: 'app_owner_show')]
-    public function show(): Response
+    public function show(Request $request, PropertyRepository $propertyRepository): Response
     {
-        return $this->render('owner/show.html.twig', [
-            'controller_name' => 'OwnerController',
-        ]);
-    }
+    $id = $request->query->get('id');
+    $property = $propertyRepository->find($id);
 
+    return $this->render('owner/show.html.twig', [
+        'property' => $property,
+    ]);
+    }
+    
     #[Route('/owner/property/{id}/add-tenant', name: 'app_owner_add_tenant')]
     public function addTenant(
         Property $property,
