@@ -38,9 +38,26 @@ class TenantHandler
 
         $this->em->persist($tenant);
         $this->em->flush();
+        
 
-        // Envoyer l'email si la case est cochée
         if ($form->get('sendEmail')->getData()) {
+            $this->sendInvitationEmail($user, $token);
+        }
+    }
+    
+    public function updateTenantFromForm(FormInterface $form, Tenant $tenant): void
+    {
+        $user = $tenant->getUser();
+        $user->setFirstname($form->get('firstname')->getData());
+        $user->setLastname($form->get('lastname')->getData());
+        $user->setEmail($form->get('email')->getData());
+        $user->setPhone($form->get('phone')->getData());
+
+        $this->em->flush();
+    }
+
+    private function sendInvitationEmail(User $user, string $token): void
+        {
             $email = (new Email())
             ->from('noreply@bailpilote.fr')
             ->to($user->getEmail())
@@ -57,4 +74,3 @@ class TenantHandler
             $this->mailer->send($email);
         }
     }
-}
