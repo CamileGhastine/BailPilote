@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Property;
 use App\Entity\Tenant;
 use App\Form\TenantType;
+use App\Repository\OwnerRepository;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +15,19 @@ use App\Service\TenantHandler;
 class OwnerController extends AbstractController
 {
     #[Route('/owner', name: 'app_owner_index')]
-    public function index(): Response
+    public function index(PropertyRepository $propertyRepo, OwnerRepository $ownerRepo): Response
     {
-        return $this->render('owner/index.html.twig');
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $owner = $ownerRepo->findBy(['user' => $user]);
+        $properties = $propertyRepo->findBy(['owner' => $owner]);
+        ($properties);
+        return $this->render('owner/index.html.twig', [
+            'properties' => $properties,
+        ]);
     }
     
     #[Route('/owner/show', name: 'app_owner_show')]
