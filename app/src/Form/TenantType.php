@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Entity\Tenant;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -69,26 +69,14 @@ class TenantType extends AbstractType
                     ]),
                     new Regex([
                         'pattern' => '/^(\+33|0)[1-9](\s*\d{2}){4}$/',
-                        'message' => "Le téléphone doit être composé de 10 chiffres.",
+                        'message' => "Le numéro de téléphone n'est pas valide.",
                     ]),
                 ],
             ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe',
+            ->add('sendEmail', CheckboxType::class, [
+                'label' => 'Envoyer un email au locataire',
                 'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "Le mot de passe est obligatoire.",
-                    ]),
-                    new Length([
-                        'min' => 12,
-                        'minMessage' => "Le mot de passe doit comporter au moins {{ limit }} caractères.",
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_])/',
-                        'message' => "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
-                    ]),
-                ],
+                'required' => false,
             ])
         ;
     }
