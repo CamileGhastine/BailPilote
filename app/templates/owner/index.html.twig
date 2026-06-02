@@ -17,7 +17,7 @@
         </div>
 
         {# Navigation sm/md — barre horizontale sous le header, au-dessus des biens #}
-        <div class="d-none d-sm-flex d-lg-none flex-wrap gap-2 gap-md-4 mt-3 justify-content-center">
+        <div class="d-none d-sm-flex d-lg-none flex-wrap gap-2 gap-md-4 mt-3 justify-content-center flex-nowrap">
             <div class="d-flex justify-content-around border border-success rounded-1 bg-primary bg-opacity-10 p-2">
                 <a href="" class="btn position-relative text-decoration-none">
                     ✉️
@@ -86,19 +86,19 @@
 
         <div class="container mt-4 d-flex flex-wrap gap-4 justify-content-center">
             <div class="row gy-3">
-                {% for i in 1..5 %}
+                {% for property in properties %}
                 <div class="col-12 col-lg-6 col-xl-4">
                     <div class="card border-primary border rounded-2 overflow-hidden">
-                        <div class="card-header bg-primary text-white fw-bold">Nom de bien</div>
+                        <div class="card-header bg-primary text-white fw-bold">{{property.title}} </div>
                         <div class="card-body bg-primary bg-opacity-10">
                             <div class="d-flex">
                                 <div>
                                     <img src="{{asset('image/logo.png')}}" alt="photo de bien"
                                         style="width: clamp(25%, 35%, 200px);">
                                     <ul class="list-unstyled mt-4">
-                                        <li>Type: </li>
-                                        <li>surface: </li>
-                                        <li>energie: </li>
+                                        <li>Type: {{property.type}}</li>
+                                        <li>surface: {{property.area}} m²</li>
+                                        <li>energie: {{property.ecoNote}}</li>
                                     </ul>
                                 </div>
                                 <div>

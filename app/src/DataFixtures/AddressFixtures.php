@@ -13,7 +13,7 @@ class AddressFixtures extends Fixture
     {
         $faker = Factory::create();
 
-        for ($i=0; $i < 20 ; $i++) { 
+        for ($i=0; $i < 40 ; $i++) { 
             $address = (new Address())
                 ->setNumber($faker->numberBetween(1,230))
                 ->setCity($faker->city())

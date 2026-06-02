@@ -59,7 +59,7 @@ class UserFixtures extends Fixture
             $user->setPhone($faker->phoneNumber());
             $user->setRoles(['ROLE_USER']);
             $user->setIsVerified(true);
-            $user->setPassword($this->hasher->hashPassword($user, ucfirst($user->getFirstname()) . $user->getLastname() . substr($user->getPhone(), 0, 2)) . '$');
+            $user->setPassword($this->hasher->hashPassword($user, 'Password123456$'));
 
             $manager->persist($user);
             $this->addReference('user_' . $i, $user);

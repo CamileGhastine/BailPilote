@@ -24,7 +24,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $ecoNotes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
         $gesNotes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
-        for ($i=0; $i < 20 ; $i++) {
+        for ($i=0; $i < 40 ; $i++) {
             $address = $this->getReference('address_' . $i, Address::class);
             $owner = $this->getReference('owner_' . rand(0, 19), Owner::class);
 
