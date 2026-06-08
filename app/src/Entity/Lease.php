@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
 
 #[ORM\Entity(repositoryClass: LeaseRepository::class)]
 class Lease
@@ -28,8 +29,8 @@ class Lease
     #[ORM\Column]
     private int $duration;
 
-    #[ORM\Column(name: 'irlDate', length: 255)]
-    private string $irlDate;
+    #[ORM\Column(name: 'irlDate')]
+    private \DateTimeImmutable $irlDate;
 
     #[ORM\Column]
     private float $irl;
@@ -111,12 +112,12 @@ class Lease
         return $this;
     }
 
-    public function getIrlDate(): string
+    public function getIrlDate(): \DateTimeImmutable
     {
         return $this->irlDate;
     }
 
-    public function setIrlDate(string $irlDate): static
+    public function setIrlDate(\DateTimeImmutable $irlDate): static
     {
         $this->irlDate = $irlDate;
 

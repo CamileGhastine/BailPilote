@@ -81,7 +81,7 @@ class TestFixtures extends Fixture
         $lease->setRentingAmount(800);
         $lease->setLeasedAt(new \DateTimeImmutable());
         $lease->setDuration(12);
-        $lease->setIrlDate('T2 2024');
+        $lease->setIrlDate(new \DateTimeImmutable('2024-01-30'));
         $lease->setIrl(1.0);
         $lease->setSecurityDeposit(1600);
         $lease->setDateOfPayment(5);

@@ -23,7 +23,7 @@
 
                         <div class="position-relative mb-4">
 
-                            <a href="#" class="btn btn-primary btn-sm position-absolute top-0 end-0 m-2 z-1">
+                            <a href="#" class="btn btn-primary btn-sm position-absolute top-0 end-0 m-2 z-1 text-decoration-none">
                                 + Image
                             </a>
 
@@ -72,8 +72,8 @@
                             </p>
 
                             <p class="mb-0">
-                                {# {{ property.postalCode }} {{ property.city }} #}
-                                00000 Ville
+                                {{ property.address.number }} {{ property.address.street ~ ','}} {{ property.address.zipCode }} {{ property.address.city ~ ' - ' ~ property.address.country}}
+                                
                             </p>
                         </div>
 
@@ -85,7 +85,7 @@
                                 <span class="fw-bold d-block">Type</span>
                                 <span>
                                     {# {{ property.type }} #}
-                                    Appartement
+                                    {{property.type}}
                                 </span>
                             </div>
 
@@ -93,7 +93,7 @@
                                 <span class="fw-bold d-block">Surface</span>
                                 <span>
                                     {# {{ property.surface }} m² #}
-                                    50 m²
+                                    {{property.area}} m²
                                 </span>
                             </div>
 
@@ -101,7 +101,7 @@
                                 <span class="fw-bold d-block">Conso énergie</span>
                                 <span>
                                     {# {{ property.energyGrade }} #}
-                                    C
+                                    {{property.ecoNote}}
                                 </span>
                             </div>
 
@@ -109,7 +109,7 @@
                                 <span class="fw-bold d-block">GES</span>
                                 <span>
                                     {# {{ property.gesGrade }} #}
-                                    D
+                                    {{property.gesNote}}
                                 </span>
                             </div>
 
@@ -124,7 +124,7 @@
 
                             <p class="mb-0">
                                 {# {{ property.description }} #}
-                                Description du bien immobilier destinée à l’annonce.
+                                {{property.description}}
                             </p>
                         </div>
 
