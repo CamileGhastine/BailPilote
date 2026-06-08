@@ -224,7 +224,12 @@
 
             <div class="card-body bg-primary bg-opacity-10" id="images-container"
                  data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
-                 data-index="{{ form.images|length }}">
+                 data-index="{{ form.images|length }}"
+                 data-max-images="10">
+
+                <p class="text-muted small mb-3">
+                    Formats acceptés : JPG, PNG, WEBP — 10 Mo maximum par photo, 10 photos au maximum.
+                </p>
 
                 {% for image in form.images %}
                     <div class="image-entry border rounded p-3 mb-3">
@@ -232,6 +237,7 @@
                             {{ form_label(image.file) }}
                             {{ form_widget(image.file, {'attr': {'class': 'form-control'}}) }}
                             {{ form_errors(image.file) }}
+                            <img class="image-preview img-thumbnail mt-2 d-none" alt="">
                         </div>
                         <div class="mb-2">
                             {{ form_label(image.alt) }}
@@ -333,20 +339,59 @@
         const addBtn = document.getElementById('add-image');
         if (!container || !addBtn) return;
 
+        const maxImages = parseInt(container.dataset.maxImages);
         let index = parseInt(container.dataset.index);
 
+        function updateAddButtonState() {
+            const count = container.querySelectorAll('.image-entry').length;
+            const limitReached = count >= maxImages;
+            addBtn.disabled = limitReached;
+            addBtn.textContent = limitReached
+                ? `Limite de ${maxImages} photos atteinte`
+                : '+ Ajouter une photo';
+        }
+
+        function showPreview(fileInput) {
+            const wrapper = fileInput.parentElement;
+            let preview = wrapper.querySelector('.image-preview');
+            if (!preview) {
+                preview = document.createElement('img');
+                preview.className = 'image-preview img-thumbnail mt-2 d-none';
+                preview.alt = '';
+                wrapper.appendChild(preview);
+            }
+
+            const file = fileInput.files && fileInput.files[0];
+            if (!file) {
+                preview.classList.add('d-none');
+                preview.removeAttribute('src');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                preview.src = event.target.result;
+                preview.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+        }
+
         addBtn.addEventListener('click', () => {
+            if (container.querySelectorAll('.image-entry').length >= maxImages) return;
+
             const prototype = container.dataset.prototype.replace(/__name__/g, index);
             const div = document.createElement('div');
             div.className = 'image-entry border rounded p-3 mb-3';
             div.innerHTML = prototype + '<button type="button" class="btn btn-danger btn-sm remove-image mt-2">Supprimer</button>';
             container.appendChild(div);
             index++;
+            updateAddButtonState();
         });
 
         container.addEventListener('click', (e) => {
             if (e.target.classList.contains('remove-image')) {
                 e.target.closest('.image-entry').remove();
+                updateAddButtonState();
             }
         });
 
@@ -355,8 +400,15 @@
                 container.querySelectorAll('input[type="checkbox"][name*="[isPrincipal]"]').forEach(cb => {
                     if (cb !== e.target) cb.checked = false;
                 });
+                return;
+            }
+
+            if (e.target.matches('input[type="file"]')) {
+                showPreview(e.target);
             }
         });
+
+        updateAddButtonState();
     })();
 
     (function () {

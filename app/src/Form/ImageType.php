@@ -24,9 +24,10 @@ class ImageType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\File(
-                        maxSize: '50M',
+                        maxSize: '10M',
                         mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
                         mimeTypesMessage: 'Format accepté : JPG, PNG, WEBP',
+                        maxSizeMessage: 'La photo est trop lourde ({{ size }} {{ suffix }}). Taille maximum : {{ limit }} {{ suffix }}.',
                     ),
                 ],
             ])
