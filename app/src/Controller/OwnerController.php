@@ -6,6 +6,7 @@ use App\Entity\Tenant;
 use App\Form\TenantType;
 use App\Repository\OwnerRepository;
 use App\Repository\PropertyRepository;
+use App\Repository\TenantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,19 +25,21 @@ class OwnerController extends AbstractController
 
         $owner = $ownerRepo->findBy(['user' => $user]);
         $properties = $propertyRepo->findBy(['owner' => $owner]);
-
+        
         return $this->render('owner/index.html.twig', [
             'properties' => $properties,
         ]);
     }
     
     #[Route('/owner/show/{id}', name: 'app_owner_show')]
-    public function show(int $id, PropertyRepository $propertyRepo): Response
+    public function show(int $id, PropertyRepository $propertyRepo, TenantRepository $tenantRepo): Response
     {
         $property = $propertyRepo->findWithAddress($id);
-        
+        $tenant = $tenantRepo->findWithUserAndLease($property);
+        //dd($tenant);
         return $this->render('owner/show.html.twig', [
             'property' => $property,
+            'tenant' => $tenant,
         ]);
     }
     
