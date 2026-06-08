@@ -13,7 +13,15 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Service\TenantHandler;
 
 class OwnerController extends AbstractController
-{
+{   
+    public function __construct(
+        private PropertyRepository $propertyRepository,
+        private TenantRepository $tenantRepository,
+        private TenantHandler $tenantHandler,
+    )
+    {
+    }
+
     #[Route('/owner', name: 'app_owner_index')]
     public function index(): Response
     {
@@ -21,10 +29,10 @@ class OwnerController extends AbstractController
     }
 
     #[Route('/owner/show', name: 'app_owner_show')]
-    public function show(Request $request, PropertyRepository $propertyRepository): Response
+    public function show(Request $request): Response
     {
         $id = $request->query->get('id');
-        $property = $propertyRepository->find($id);
+        $property = $this->propertyRepository->findWithLeaseAndTenants($id);
 
         return $this->render('owner/show.html.twig', [
             'property' => $property,
@@ -34,14 +42,11 @@ class OwnerController extends AbstractController
     #[Route('/owner/property/{propertyId}/tenant/save', name: 'app_owner_save_tenant')]
     public function saveTenant(
         Request $request,
-        TenantHandler $tenantHandler,
-        PropertyRepository $propertyRepository,
-        TenantRepository $tenantRepository,
         int $propertyId,
     ): Response {
         $tenantId = $request->query->get('id');
         
-        $property = $propertyRepository->find($propertyId);
+        $property = $this->propertyRepository->find($propertyId);
         $lease = $property->getLease();
 
         if (!$lease) {
@@ -50,21 +55,19 @@ class OwnerController extends AbstractController
         }
 
         $tenant = $tenantId
-            ? $tenantRepository->find($tenantId)
+            ? $this->tenantRepository->findWithUser($tenantId)
             : new Tenant();
 
-        $form = $this->createForm(TenantType::class, $tenant, [
-            'user' => $tenantId ? $tenant->getUser() : null,
-        ]);
+        $form = $this->createForm(TenantType::class, $tenant);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($tenantId) {
-                $tenantHandler->updateTenantFromForm($form, $tenant);
+                $this->tenantHandler->updateTenantFromForm($form, $tenant);
                 $this->addFlash('success', 'Locataire mis à jour avec succès.');
             } else {
-                $tenantHandler->createTenantFromForm($form, $lease);
+                $this->tenantHandler->createTenantFromForm($form, $lease);
                 $this->addFlash('success', 'Locataire ajouté avec succès.');
             }
 

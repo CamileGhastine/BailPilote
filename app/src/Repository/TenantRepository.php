@@ -16,28 +16,27 @@ class TenantRepository extends ServiceEntityRepository
         parent::__construct($registry, Tenant::class);
     }
 
-    //    /**
-    //     * @return Tenant[] Returns an array of Tenant objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByLeaseWithUser(int $leaseId): array
+    {
+        return $this->createQueryBuilder('t')
+        ->join('t.user', 'u')
+        ->addSelect('u')
+        ->where('t.lease = :leaseId')
+        ->setParameter('leaseId', $leaseId)
+        ->getQuery()
+        ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Tenant
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findWithUser(int $id): ?Tenant
+    {
+        return $this->createQueryBuilder('t')
+        ->join('t.user', 'u')
+        ->addSelect('u')
+        ->leftJoin('u.owner', 'o')
+        ->addSelect('o')
+        ->where('t.id =:id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 }
