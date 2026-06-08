@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Gestion du bien{% endblock %}
@@ -5,394 +6,177 @@
 {% block body %}
     <div class="container my-5">
 
-        <h1 class="text-center mb-5">
-            {# {{ property.name }} #}
-            Nom du bien
-        </h1>
+        <h1 class="text-center mb-5">Nom du bien</h1>
 
         <div class="row g-5 align-items-start">
 
-            {# Colonne gauche : caractéristiques du bien #}
+            {# Colonne gauche #}
             <div class="col-12 col-lg-4">
                 <div class="card border-primary shadow-sm">
                     <div class="card-header text-center bg-primary text-white fw-bold">
                         Caractéristiques du bien
                     </div>
-
                     <div class="card-body bg-primary bg-opacity-10">
-
-                        <div class="position-relative mb-4">
-
-                            <a href="#" class="btn btn-primary btn-sm position-absolute top-0 end-0 m-2 z-1">
-                                + Image
-                            </a>
-
-                            {% if property.images is defined and property.images|length > 0 %}
-                                <div id="propertyImagesCarousel" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner rounded border">
-
-                                        {% for image in property.images %}
-                                            <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                                <img src="{{ asset(image.path) }}"
-                                                     class="d-block w-100 object-fit-cover"
-                                                     style="height: 220px;"
-                                                     alt="{{ image.alt|default('Photo du bien') }}">
-                                            </div>
-                                        {% endfor %}
-
-                                    </div>
-
-                                    <button class="carousel-control-prev"
-                                            type="button"
-                                            data-bs-target="#propertyImagesCarousel"
-                                            data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon"></span>
-                                    </button>
-
-                                    <button class="carousel-control-next"
-                                            type="button"
-                                            data-bs-target="#propertyImagesCarousel"
-                                            data-bs-slide="next">
-                                        <span class="carousel-control-next-icon"></span>
-                                    </button>
-                                </div>
-                            {% else %}
-                                <div class="bg-light border rounded d-flex align-items-center justify-content-center"
-                                     style="height: 220px;">
-                                    <span class="text-muted">Aucune image</span>
-                                </div>
-                            {% endif %}
-
+                        <div class="bg-light border rounded d-flex align-items-center justify-content-center mb-4"
+                             style="height: 220px;">
+                            <span class="text-muted">Aucune image</span>
                         </div>
-
                         <div class="text-center mb-4">
-                            <p class="mb-1 fw-bold">
-                                {# {{ property.address }} #}
-                                Adresse du bien
-                            </p>
-
-                            <p class="mb-0">
-                                {# {{ property.postalCode }} {{ property.city }} #}
-                                00000 Ville
-                            </p>
+                            <p class="mb-1 fw-bold">Adresse du bien</p>
+                            <p class="mb-0">00000 Ville</p>
                         </div>
-
                         <hr>
-
                         <div class="row text-center mb-4">
-
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">Type</span>
-                                <span>
-                                    {# {{ property.type }} #}
-                                    Appartement
-                                </span>
+                                <span>Appartement</span>
                             </div>
-
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">Surface</span>
-                                <span>
-                                    {# {{ property.surface }} m² #}
-                                    50 m²
-                                </span>
+                                <span>50 m²</span>
                             </div>
-
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">Conso énergie</span>
-                                <span>
-                                    {# {{ property.energyGrade }} #}
-                                    C
-                                </span>
+                                <span>C</span>
                             </div>
-
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">GES</span>
-                                <span>
-                                    {# {{ property.gesGrade }} #}
-                                    D
-                                </span>
+                                <span>D</span>
                             </div>
-
                         </div>
-
                         <hr>
-
                         <div class="mb-4">
-                            <h6 class="fw-bold text-center mb-3">
-                                Description pour l’annonce
-                            </h6>
-
-                            <p class="mb-0">
-                                {# {{ property.description }} #}
-                                Description du bien immobilier destinée à l’annonce.
-                            </p>
+                            <h6 class="fw-bold text-center mb-3">Description pour l'annonce</h6>
+                            <p class="mb-0">Description du bien immobilier destinée à l'annonce.</p>
                         </div>
-
                         <div class="text-center">
-                            <a href="#" class="btn btn-primary btn-sm">
-                                Modifier
-                            </a>
+                            <a href="#" class="btn btn-primary btn-sm">Modifier</a>
                         </div>
-
                     </div>
                 </div>
             </div>
 
             {# Colonne centrale : locataires #}
-            <div class="col-12 col-lg-4">
-                <div class="card shadow-sm border-primary">
-                    <div class="card-header text-center bg-primary text-white fw-bold">
-                        Locataires
-                    </div>
+<div class="col-12 col-lg-4">
+    <div class="card shadow-sm border-primary">
+        <div class="card-header text-center bg-primary text-white fw-bold">
+            Locataires
+        </div>
+        <div class="card-body bg-primary bg-opacity-10">
 
-                    <div class="card-body bg-primary bg-opacity-10">
-
-                        {#{% if property.tenants is defined and property.tenants|length > 0 %}#}
-
-                            <div class="d-flex flex-column gap-3">
-
-                                {#{% for tenant in property.tenants %}#}
-                                    <div class="card shadow-sm border-primary">
-                                        <div class="card-body">
-
-                                            <p class="mb-3">
-                                                {#{{ tenant.firstName }} {{ tenant.lastName }}#}
-                                                Nom prénom
-                                            </p>
-
-                                            <p class="mb-2">
-                                                Email
-                                                {#{{ tenant.email }}#}
-                                            </p>
-
-                                            <p class="mb-2">
-                                                Téléphone
-                                                {#{{ tenant.phone }}#}
-                                            </p>
-
-                                            <hr>
-
-                                            
-
-                                            <p class="mb-2">
-                                                <strong>Loyer HC :</strong>
-                                                {#{{ tenant.rentExcludingCharges ? tenant.rentExcludingCharges|number_format(2, ',', ' ') ~ ' €' : '' }}#}
-                                            </p>
-
-                                            <p class="mb-2">
-                                                <strong>Charges :</strong>
-                                                {#{{ tenant.charges ? tenant.charges|number_format(2, ',', ' ') ~ ' €' : '' }}#}
-                                            </p>
-
-                                            <p class="mb-2">
-                                                <strong>Caution :</strong>
-                                                {#{{ tenant.deposit ? tenant.deposit|number_format(2, ',', ' ') ~ ' €' : '' }}#}
-                                            </p>
-
-                                            <div class="mb-2">
-                                                <strong>Garants :</strong>
-
-                                                {% if tenant.guarants is defined and tenant.guarants|length > 0 %}
-                                                    <ul class="ps-3">
-                                                        {% for guarantor in tenant.guarants %}
-                                                            <li>
-                                                                {{ guarantor.firstName }} {{ guarantor.lastName }}
-                                                                -
-                                                                {{ guarantor.email }}
-                                                                -
-                                                                {{ guarantor.phone }}
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                {% else %}
-                                                    <span class="text-muted">
-                                                        Aucun garant
-                                                    </span>
-                                                {% endif %}
-                                            </div>
-
-                                            <p class="mb-2">
-                                                <strong>Date du bail :</strong>
-                                                {#{{ tenant.leaseDate ? tenant.leaseDate|date('d/m/Y') : '' }}#}
-                                            </p>
-
-                                            <p class="mb-2">
-                                                <strong>IRL :</strong>
-                                                {#{{ tenant.leaseDuration }}#}
-                                            </p>
-
-                                            <div class="text-center mt-3">
-                                                <a href="#" class="btn btn-primary btn-sm">
-                                                    Modifier
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                {#{% endfor %}#}
-
-                            </div>
-
-                        {#{% else %}#}
-
-                            <div class="text-center py-4">
-                                <p class="text-muted">
-                                    Aucun locataire n’est encore rattaché à ce bien.
+            {% if property.lease and property.lease.tenant|length > 0 %}
+                <div class="d-flex flex-column gap-3">
+                    {% for tenant in property.lease.tenant %}
+                        <div class="card shadow-sm border-primary">
+                            <div class="card-body">
+                                <p class="mb-3">{{ tenant.user.firstname }} {{ tenant.user.lastname }}</p>
+                                <p class="mb-2">{{ tenant.user.email }}</p>
+                                <p class="mb-2">{{ tenant.user.phone }}</p>
+                                <hr>
+                                <p class="mb-2">
+                                    <strong>Loyer HC :</strong>
+                                    {{ property.lease.rentingAmount|number_format(2, ',', ' ') }} €
                                 </p>
-
-                                <a href="{{ path('app_owner_add_tenant', {'id': property.id}) }}" class="btn btn-success btn-sm">
-                                    Ajouter un locataire
-                                </a>
+                                <p class="mb-2">
+                                    <strong>Caution :</strong>
+                                    {{ property.lease.securityDeposit|number_format(2, ',', ' ') }} €
+                                </p>
+                                <p class="mb-2">
+                                    <strong>Date du bail :</strong>
+                                    {{ property.lease.leasedAt|date('d/m/Y') }}
+                                </p>
+                                <p class="mb-2">
+                                    <strong>IRL :</strong>
+                                    {{ property.lease.irl }}
+                                </p>
+                                <div class="text-center mt-3">
+                                    <a href="{{ path('app_owner_save_tenant', {'propertyId': property.id, 'id': tenant.id}) }}"
+                                       class="btn btn-primary btn-sm">Modifier</a>
+                                </div>
                             </div>
-
-                        {#{% endif %}#}
-
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
+            {% else %}
+                <div class="text-center py-4">
+                    <p class="text-muted">Aucun locataire n'est encore rattaché à ce bien.</p>
+                </div>
+            {% endif %}
+
+            <div class="text-center mt-3">
+                <a href="{{ path('app_owner_save_tenant', {'propertyId': property.id}) }}"
+                   class="btn btn-success btn-sm">
+                    Ajouter un locataire
+                </a>
             </div>
 
-            {# Colonne droite : petits encadrés comme dans le wireframe #}
+        </div>
+    </div>
+</div>
+
+            {# Colonne droite #}
             <div class="col-12 col-lg-4">
                 <div class="d-flex flex-column gap-4">
 
-                    {# Messagerie instantanée #}
                     <div class="card border-info shadow-sm">
-                        <div class="card-header text-center fw-bold">
-                            Messagerie
-                        </div>
-
+                        <div class="card-header text-center fw-bold">Messagerie</div>
                         <div class="card-body">
-
-                            {# En-tête de conversation #}
                             <div class="d-flex align-items-center mb-3">
                                 <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
-                                     style="width: 40px; height: 40px;">
-                                    L
-                                </div>
-
-                                <div>
-                                    <p class="fw-bold mb-0">
-                                        {# {{ property.tenant.firstName }} {{ property.tenant.lastName }} #}
-                                        Locataire
-                                    </p>
-                                </div>
+                                     style="width: 40px; height: 40px;">L</div>
+                                <p class="fw-bold mb-0">Locataire</p>
                             </div>
-
-                            {# Zone des messages #}
-                            <div class="border rounded bg-light p-3 mb-3"
-                                 style="height: 250px; overflow-y: auto;">
-
-                                {# Message du locataire #}
-
-                            </div>
-
-                            {# Formulaire d’envoi du message #}
+                            <div class="border rounded bg-light p-3 mb-3" style="height: 250px; overflow-y: auto;"></div>
                             <form method="post" action="#">
                                 <div class="input-group">
-                                    <input type="text"
-                                           name="message"
-                                           class="form-control form-control-sm"
+                                    <input type="text" name="message" class="form-control form-control-sm"
                                            placeholder="Écrire un message...">
-
-                                    <button class="btn btn-primary btn-sm" type="submit">
-                                        Envoyer
-                                    </button>
+                                    <button class="btn btn-primary btn-sm" type="submit">Envoyer</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
 
                     <div class="card shadow-sm border-warning">
-                        <div class="card-header text-center fw-bold">
-                            Notifications
-                        </div>
-
+                        <div class="card-header text-center fw-bold">Notifications</div>
                         <div class="card-body">
-
                             <div class="border rounded p-3 mb-3">
-                                <p class="fw-bold mb-1">
-                                    Quittance de loyer
-                                </p>
-
-                                <p class="small text-muted mb-3">
-                                    La quittance du mois est à générer.
-                                </p>
-
+                                <p class="fw-bold mb-1">Quittance de loyer</p>
+                                <p class="small text-muted mb-3">La quittance du mois est à générer.</p>
                                 <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-primary btn-sm flex-grow-1">
-                                        Générer
-                                    </button>
-
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">
-                                        ?
-                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm flex-grow-1">Générer</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm">?</button>
                                 </div>
                             </div>
-
                             <div class="border rounded p-3">
-                                <p class="fw-bold mb-1">
-                                    Rappel de loyer
-                                </p>
-
-                                <p class="small text-muted mb-3">
-                                    Envoyer un rappel au locataire.
-                                </p>
-
+                                <p class="fw-bold mb-1">Rappel de loyer</p>
+                                <p class="small text-muted mb-3">Envoyer un rappel au locataire.</p>
                                 <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-warning btn-sm flex-grow-1">
-                                        Envoyer
-                                    </button>
-
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">
-                                        ?
-                                    </button>
+                                    <button type="button" class="btn btn-warning btn-sm flex-grow-1">Envoyer</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm">?</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
                     <div class="card shadow-sm border-info">
-                        <div class="card-header text-center fw-bold">
-                            Documents
-                        </div>
-
+                        <div class="card-header text-center fw-bold">Documents</div>
                         <div class="card-body text-center">
-                            <p class="mb-3">
-                                <strong>0</strong> nouveau document
-                            </p>
-
+                            <p class="mb-3"><strong>0</strong> nouveau document</p>
                             <div class="d-flex gap-2">
-                                <a href="#" class="btn btn-outline-primary btn-sm w-100">
-                                    Voir les documents
-                                </a>
-
-                                <a href="#" class="btn btn-primary btn-sm">
-                                    +
-                                </a>
+                                <a href="#" class="btn btn-outline-primary btn-sm w-100">Voir les documents</a>
+                                <a href="#" class="btn btn-primary btn-sm">+</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="card shadow-sm border-info">
-                        <div class="card-header text-center fw-bold">
-                            Ma compta
-                        </div>
-
+                        <div class="card-header text-center fw-bold">Ma compta</div>
                         <div class="card-body">
-                            <p class="text-muted mb-3">
-                                Comptabilité liée à ce bien.
-                            </p>
-
+                            <p class="text-muted mb-3">Comptabilité liée à ce bien.</p>
                             <div class="d-flex gap-2">
-                                <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1">
-                                    Voir ma compta
-                                </a>
-
-                                <a href="#" class="btn btn-primary btn-sm">
-                                    +
-                                </a>
+                                <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1">Voir ma compta</a>
+                                <a href="#" class="btn btn-primary btn-sm">+</a>
                             </div>
                         </div>
                     </div>

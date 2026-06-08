@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Tenant;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -18,11 +19,14 @@ use Symfony\Component\Validator\Constraints\Regex;
 class TenantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    {   
+        $user = $options['user'];
+
         $builder
             ->add('lastname', TextType::class, [
                 'label' => 'Nom',
                 'mapped' => false,
+                'data' => $user ? $user->getLastname() : null,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le nom est obligatoire.',
@@ -37,6 +41,7 @@ class TenantType extends AbstractType
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
                 'mapped' => false,
+                'data' => $user ? $user->getFirstname() : null,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le prénom est obligatoire.',
@@ -51,6 +56,7 @@ class TenantType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'mapped' => false,
+                'data' => $user ? $user->getEmail() : null,
                 'constraints' => [
                     new NotBlank([
                         'message' => "L'email est obligatoire.",
@@ -63,6 +69,7 @@ class TenantType extends AbstractType
             ->add('phone', TextType::class, [
                 'label' => 'Téléphone',
                 'mapped' => false,
+                'data' => $user ? $user->getPhone() : null,
                 'constraints' => [
                     new NotBlank([
                         'message' => "Le téléphone est obligatoire.",
@@ -85,6 +92,9 @@ class TenantType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Tenant::class,
+            'user' => null,
         ]);
+
+        $resolver->setAllowedTypes('user', [User::class, 'null']);
     }
 }
