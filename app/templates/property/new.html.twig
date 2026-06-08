@@ -7,7 +7,7 @@
 
     <h1 class="mb-4">Ajouter un bien immobilier</h1>
 
-    {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+    {{ form_start(form, {'attr': {'data-turbo': 'false', 'enctype': 'multipart/form-data'}}) }}
 
         <div class="card mb-4 border-primary rounded-2 shadow-sm">
             <div class="card-header bg-primary text-white">
@@ -46,24 +46,28 @@
                     {{ form_errors(form.area) }}
                 </div>
 
-                <div class="mb-3">
-                    {{ form_label(form.numberOfRooms) }}
-                    {{ form_widget(form.numberOfRooms, {
-                        'attr': {
-                            'class': 'form-control'
-                        }
-                    }) }}
-                    {{ form_errors(form.numberOfRooms) }}
+                <div class="mb-3" id="field-numberOfRooms">
+                    {% if form.numberOfRooms is defined %}
+                        {{ form_label(form.numberOfRooms) }}
+                        {{ form_widget(form.numberOfRooms, {
+                            'attr': {
+                                'class': 'form-control'
+                            }
+                        }) }}
+                        {{ form_errors(form.numberOfRooms) }}
+                    {% endif %}
                 </div>
 
-                <div class="mb-3">
-                    {{ form_label(form.numberOfBedrooms) }}
-                    {{ form_widget(form.numberOfBedrooms, {
-                        'attr': {
-                            'class': 'form-control'
-                        }
-                    }) }}
-                    {{ form_errors(form.numberOfBedrooms) }}
+                <div class="mb-3" id="field-numberOfBedrooms">
+                    {% if form.numberOfBedrooms is defined %}
+                        {{ form_label(form.numberOfBedrooms) }}
+                        {{ form_widget(form.numberOfBedrooms, {
+                            'attr': {
+                                'class': 'form-control'
+                            }
+                        }) }}
+                        {{ form_errors(form.numberOfBedrooms) }}
+                    {% endif %}
                 </div>
 
                 <div class="mb-3">
@@ -86,24 +90,28 @@
                     {{ form_errors(form.description) }}
                 </div>
 
-                <div class="mb-3">
-                    {{ form_label(form.ecoNote) }}
-                    {{ form_widget(form.ecoNote, {
-                        'attr': {
-                            'class': 'form-select'
-                        }
-                    }) }}
-                    {{ form_errors(form.ecoNote) }}
+                <div class="mb-3" id="field-ecoNote">
+                    {% if form.ecoNote is defined %}
+                        {{ form_label(form.ecoNote) }}
+                        {{ form_widget(form.ecoNote, {
+                            'attr': {
+                                'class': 'form-select'
+                            }
+                        }) }}
+                        {{ form_errors(form.ecoNote) }}
+                    {% endif %}
                 </div>
 
-                <div class="mb-3">
-                    {{ form_label(form.gesNote) }}
-                    {{ form_widget(form.gesNote, {
-                        'attr': {
-                            'class': 'form-select'
-                        }
-                    }) }}
-                    {{ form_errors(form.gesNote) }}
+                <div class="mb-3" id="field-gesNote">
+                    {% if form.gesNote is defined %}
+                        {{ form_label(form.gesNote) }}
+                        {{ form_widget(form.gesNote, {
+                            'attr': {
+                                'class': 'form-select'
+                            }
+                        }) }}
+                        {{ form_errors(form.gesNote) }}
+                    {% endif %}
                 </div>
 
             </div>
@@ -247,6 +255,36 @@
 
 <script>
     (function () {
+        const typesWithoutRooms = ['terrain', 'parking'];
+        const roomsField = document.getElementById('field-numberOfRooms');
+        const bedroomsField = document.getElementById('field-numberOfBedrooms');
+        const ecoNoteField = document.getElementById('field-ecoNote');
+        const gesNoteField = document.getElementById('field-gesNote');
+        const typeSelect = document.querySelector('[name$="[type]"]');
+
+        function toggleField(field, hide) {
+            field.style.display = hide ? 'none' : '';
+            if (hide) {
+                const input = field.querySelector('input, select');
+                if (input) input.value = '';
+            }
+        }
+
+        function toggleRoomsFields() {
+            const hide = typesWithoutRooms.includes(typeSelect.value);
+            toggleField(roomsField, hide);
+            toggleField(bedroomsField, hide);
+            toggleField(ecoNoteField, hide);
+            toggleField(gesNoteField, hide);
+        }
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', toggleRoomsFields);
+            toggleRoomsFields();
+        }
+    })();
+
+    (function () {
         const container = document.getElementById('images-container');
         const addBtn = document.getElementById('add-image');
         if (!container || !addBtn) return;
@@ -265,6 +303,14 @@
         container.addEventListener('click', (e) => {
             if (e.target.classList.contains('remove-image')) {
                 e.target.closest('.image-entry').remove();
+            }
+        });
+
+        container.addEventListener('change', (e) => {
+            if (e.target.matches('input[type="checkbox"][name*="[isPrincipal]"]') && e.target.checked) {
+                container.querySelectorAll('input[type="checkbox"][name*="[isPrincipal]"]').forEach(cb => {
+                    if (cb !== e.target) cb.checked = false;
+                });
             }
         });
     })();

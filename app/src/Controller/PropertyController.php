@@ -42,6 +42,8 @@ class PropertyController extends AbstractController
 
             $property->setOwner($owner);
 
+            $uploadedImages = [];
+
             foreach ($form->get('images') as $imageForm) {
                 /** @var Image $image */
                 $image = $imageForm->getData();
@@ -62,6 +64,12 @@ class PropertyController extends AbstractController
                 $image->setPath($imagesWebPath . '/' . $newFilename);
                 $image->setTitle($originalName);
                 $image->setType($mimeType);
+
+                $uploadedImages[] = $image;
+            }
+
+            if (count($uploadedImages) === 1 && !$uploadedImages[0]->getIsPrincipal()) {
+                $uploadedImages[0]->setIsPrincipal(true);
             }
 
             $entityManager->persist($property);

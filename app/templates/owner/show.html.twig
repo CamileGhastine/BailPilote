@@ -14,7 +14,7 @@
 
             {# Colonne gauche : caractéristiques du bien #}
             <div class="col-12 col-lg-4">
-                <div class="card border-primary shadow-sm">
+                <div class="card border-primary rounded border border-2 shadow-sm">
                     <div class="card-header text-center bg-primary text-white fw-bold">
                         Caractéristiques du bien
                     </div>
@@ -140,7 +140,7 @@
 
             {# Colonne centrale : locataires #}
             <div class="col-12 col-lg-4">
-                <div class="card shadow-sm border-primary">
+                <div class="card shadow-sm border-primary rounded border border-2">
                     <div class="card-header text-center bg-primary text-white fw-bold">
                         Locataires
                     </div>
@@ -152,7 +152,7 @@
                             <div class="d-flex flex-column gap-3">
 
                                 {#{% for tenant in property.tenants %}#}
-                                    <div class="card shadow-sm border-primary">
+                                    <div class="card shadow-sm border-primary rounded border border-2">
                                         <div class="card-body">
 
                                             <p class="mb-3">
@@ -256,7 +256,7 @@
                 <div class="d-flex flex-column gap-4">
 
                     {# Messagerie instantanée #}
-                    <div class="card border-info shadow-sm">
+                    <div class="card border-info shadow-sm rounded border border-2">
                         <div class="card-header text-center fw-bold">
                             Messagerie
                         </div>
@@ -279,7 +279,7 @@
                             </div>
 
                             {# Zone des messages #}
-                            <div class="border rounded bg-light p-3 mb-3"
+                            <div class="border rounded border-2 bg-light p-3 mb-3"
                                  style="height: 250px; overflow-y: auto;">
 
                                 {# Message du locataire #}
@@ -303,7 +303,7 @@
                         </div>
                     </div>
 
-                    <div class="card shadow-sm border-warning">
+                    <div class="card shadow-sm border-warning rounded border border-2">
                         <div class="card-header text-center fw-bold">
                             Notifications
                         </div>
@@ -353,7 +353,7 @@
                         </div>
                     </div>
 
-                    <div class="card shadow-sm border-info">
+                    <div class="card shadow-sm border-info rounded border border-2">
                         <div class="card-header text-center fw-bold">
                             Documents
                         </div>
@@ -375,7 +375,7 @@
                         </div>
                     </div>
 
-                    <div class="card shadow-sm border-info">
+                    <div class="card shadow-sm border-info rounded border border-2">
                         <div class="card-header text-center fw-bold">
                             Ma compta
                         </div>

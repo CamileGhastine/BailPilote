@@ -17,18 +17,25 @@ class OwnerFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $user = $this->userRepository->findOneBy(['email' => 'bailleur@test.com']);
+        $user = $this->userRepository->findOneBy([
+            'email' => 'bailleur@test.com',
+        ]);
+
+        if (!$user) {
+            throw new \Exception('Utilisateur bailleur@test.com introuvable.');
+        }
 
         $address = new Address();
         $address->setNumber(12);
         $address->setStreet('Rue de la Paix');
         $address->setZipCode(75001);
         $address->setCity('Paris');
-        $manager->persist($address);
 
         $owner = new Owner();
         $owner->setUser($user);
         $owner->setAddress($address);
+
+        $manager->persist($address);
         $manager->persist($owner);
 
         $manager->flush();
@@ -36,6 +43,8 @@ class OwnerFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [UserFixtures::class];
+        return [
+            UserFixtures::class,
+        ];
     }
 }

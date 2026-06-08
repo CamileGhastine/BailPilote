@@ -6,6 +6,8 @@ use App\Entity\Property;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -58,6 +60,7 @@ class PropertyType extends AbstractType
             ])
             ->add('numberOfRooms', IntegerType::class, [
                 'label' => 'Nombre de pièces',
+                'required' => false,
                 'attr' => ['type' => 'text', 'inputmode' => 'numeric', 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'')"],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -66,6 +69,7 @@ class PropertyType extends AbstractType
             ])
             ->add('numberOfBedrooms', IntegerType::class, [
                 'label' => 'Nombre de chambres',
+                'required' => false,
                 'attr' => ['type' => 'text', 'inputmode' => 'numeric', 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'')"],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -148,12 +152,33 @@ class PropertyType extends AbstractType
                 'label' => false,
             ])
         ;
+
+        $typesWithoutRooms = [Property::TYPE_TERRAIN, Property::TYPE_PARKING];
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($typesWithoutRooms): void {
+            $data = $event->getData();
+            $type = $data['type'] ?? null;
+
+            if (in_array($type, $typesWithoutRooms, true)) {
+                $data['numberOfRooms'] = null;
+                $data['numberOfBedrooms'] = null;
+                $data['ecoNote'] = null;
+                $data['gesNote'] = null;
+                $event->setData($data);
+
+                $event->getForm()->remove('numberOfRooms');
+                $event->getForm()->remove('numberOfBedrooms');
+                $event->getForm()->remove('ecoNote');
+                $event->getForm()->remove('gesNote');
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Property::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

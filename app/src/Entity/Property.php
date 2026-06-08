@@ -52,17 +52,17 @@ class Property
     #[ORM\Column]
     private float $area;
 
-    #[ORM\Column(name: 'numberOfRooms')]
-    private int $numberOfRooms;
+    #[ORM\Column(name: 'numberOfRooms', nullable: true)]
+    private ?int $numberOfRooms = null;
 
-    #[ORM\Column(name: 'numberOfBedrooms')]
-    private int $numberOfBedrooms;
+    #[ORM\Column(name: 'numberOfBedrooms', nullable: true)]
+    private ?int $numberOfBedrooms = null;
 
-    #[ORM\Column(name: 'ecoNote', length: 255)]
-    private string $ecoNote;
+    #[ORM\Column(name: 'ecoNote', length: 255, nullable: true)]
+    private ?string $ecoNote = null;
 
-    #[ORM\Column(name: 'gesNote', length: 255)]
-    private string $gesNote;
+    #[ORM\Column(name: 'gesNote', length: 255, nullable: true)]
+    private ?string $gesNote = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private string $description;
@@ -133,48 +133,48 @@ class Property
         return $this;
     }
 
-    public function getNumberOfRooms(): int
+    public function getNumberOfRooms(): ?int
     {
         return $this->numberOfRooms;
     }
 
-    public function setNumberOfRooms(int $numberOfRooms): static
+    public function setNumberOfRooms(?int $numberOfRooms): static
     {
         $this->numberOfRooms = $numberOfRooms;
 
         return $this;
     }
 
-    public function getNumberOfBedrooms(): int
+    public function getNumberOfBedrooms(): ?int
     {
         return $this->numberOfBedrooms;
     }
 
-    public function setNumberOfBedrooms(int $numberOfBedrooms): static
+    public function setNumberOfBedrooms(?int $numberOfBedrooms): static
     {
         $this->numberOfBedrooms = $numberOfBedrooms;
 
         return $this;
     }
 
-    public function getEcoNote(): string
+    public function getEcoNote(): ?string
     {
         return $this->ecoNote;
     }
 
-    public function setEcoNote(string $ecoNote): static
+    public function setEcoNote(?string $ecoNote): static
     {
         $this->ecoNote = $ecoNote;
 
         return $this;
     }
 
-    public function getGesNote(): string
+    public function getGesNote(): ?string
     {
         return $this->gesNote;
     }
 
-    public function setGesNote(string $gesNote): static
+    public function setGesNote(?string $gesNote): static
     {
         $this->gesNote = $gesNote;
 
