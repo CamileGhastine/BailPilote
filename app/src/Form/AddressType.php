@@ -6,7 +6,6 @@ use App\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,12 +14,10 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('number', IntegerType::class, [
+            ->add('number', TextType::class, [
                 'label' => 'Numéro',
-                'attr' => ['type' => 'text', 'inputmode' => 'numeric', 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'')"],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Positive(),
                 ],
             ])
             ->add('street', TextType::class, [
@@ -44,6 +41,14 @@ class AddressType extends AbstractType
             ->add('addressInfo', TextType::class, [
                 'label' => 'Complément d\'adresse',
                 'required' => false,
+            ])
+            ->add('country', TextType::class, [
+                'label' => 'Pays',
+                'required' => false,
+                'empty_data' => 'France',
+                'attr' => [
+                    'placeholder' => 'France',
+                ],
             ])
         ;
     }

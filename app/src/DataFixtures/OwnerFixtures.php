@@ -26,7 +26,7 @@ class OwnerFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $address = new Address();
-        $address->setNumber(12);
+        $address->setNumber('12');
         $address->setStreet('Rue de la Paix');
         $address->setZipCode(75001);
         $address->setCity('Paris');

@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+        <div class="card mb-4 border-primary rounded-2 shadow-sm" id="field-criteria">
             <div class="card-header bg-primary text-white">
                 <h3 class="mb-0">Critères / équipements</h3>
             </div>
@@ -127,7 +127,7 @@
 
                 <div class="row">
                     {% for criterion in form.criteria %}
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-4 mb-2" data-criterion="{{ criterion.vars.value }}">
                             <div class="form-check">
                                 {{ form_widget(criterion, {
                                     'attr': {
@@ -204,6 +204,16 @@
                     {{ form_errors(form.address.addressInfo) }}
                 </div>
 
+                <div class="mb-3">
+                    {{ form_label(form.address.country) }}
+                    {{ form_widget(form.address.country, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.country) }}
+                </div>
+
             </div>
         </div>
 
@@ -262,12 +272,42 @@
         const gesNoteField = document.getElementById('field-gesNote');
         const typeSelect = document.querySelector('[name$="[type]"]');
 
+        const criteriaHiddenByType = {
+            terrain: ['cuisine_amenagee', 'ascenseur', 'chauffage_central', 'climatisation'],
+        };
+        const criteriaField = document.getElementById('field-criteria');
+        const criterionWrappers = document.querySelectorAll('[data-criterion]');
+
         function toggleField(field, hide) {
             field.style.display = hide ? 'none' : '';
             if (hide) {
                 const input = field.querySelector('input, select');
                 if (input) input.value = '';
             }
+        }
+
+        function uncheckCriteria(wrappers) {
+            wrappers.forEach((wrapper) => {
+                const checkbox = wrapper.querySelector('input[type="checkbox"]');
+                if (checkbox) checkbox.checked = false;
+            });
+        }
+
+        function toggleCriteriaFields() {
+            const hideSection = typeSelect.value === 'parking';
+            criteriaField.style.display = hideSection ? 'none' : '';
+
+            if (hideSection) {
+                uncheckCriteria(criterionWrappers);
+                return;
+            }
+
+            const hiddenCriteria = criteriaHiddenByType[typeSelect.value] || [];
+            criterionWrappers.forEach((wrapper) => {
+                const hide = hiddenCriteria.includes(wrapper.dataset.criterion);
+                wrapper.style.display = hide ? 'none' : '';
+                if (hide) uncheckCriteria([wrapper]);
+            });
         }
 
         function toggleRoomsFields() {
@@ -279,8 +319,12 @@
         }
 
         if (typeSelect) {
-            typeSelect.addEventListener('change', toggleRoomsFields);
+            typeSelect.addEventListener('change', () => {
+                toggleRoomsFields();
+                toggleCriteriaFields();
+            });
             toggleRoomsFields();
+            toggleCriteriaFields();
         }
     })();
 
@@ -312,6 +356,18 @@
                     if (cb !== e.target) cb.checked = false;
                 });
             }
+        });
+    })();
+
+    (function () {
+        const submitBtn = document.querySelector('form button[type="submit"]');
+        if (!submitBtn) return;
+        const form = submitBtn.closest('form');
+        if (!form) return;
+
+        form.addEventListener('submit', () => {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Enregistrement...';
         });
     })();
 </script>
