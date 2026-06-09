@@ -21,8 +21,8 @@ class GuarantorFixtures extends Fixture implements DependentFixtureInterface
 
             $guarantor = (new Guarantor())
                 ->setEmail($faker->email())
-                ->setFname($faker->firstName())
-                ->setLname($faker->lastName())
+                ->setFirstname($faker->firstName())
+                ->setLastname($faker->lastName())
                 ->setPhone($faker->phoneNumber())
                 ->setLease($lease)
                 ;

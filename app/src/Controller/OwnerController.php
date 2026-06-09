@@ -35,6 +35,13 @@ class OwnerController extends AbstractController
     public function show(int $id, PropertyRepository $propertyRepo, TenantRepository $tenantRepo): Response
     {
         $property = $propertyRepo->findWithAddress($id);
+        $currentUser = $this->getUser();
+        $propertyUser = $property->getOwner()->getUser();
+
+        if ($currentUser != $propertyUser) {
+        return $this->redirectToRoute('app_owner_index');
+        }
+
         $tenant = $tenantRepo->findWithUserAndLease($property);
         //dd($tenant);
         return $this->render('owner/show.html.twig', [

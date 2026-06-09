@@ -14,10 +14,10 @@ class Guarantor
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $fname = null;
+    private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $lname = null;
+    private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
@@ -33,26 +33,26 @@ class Guarantor
         return $this->id;
     }
 
-    public function getFname(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->fname;
+        return $this->firstname;
     }
 
-    public function setFname(string $fname): static
+    public function setFirstname(string $firstname): static
     {
-        $this->fname = $fname;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getLname(): ?string
+    public function getLastname(): ?string
     {
-        return $this->lname;
+        return $this->lastname;
     }
 
-    public function setLname(string $lname): static
+    public function setLastname(string $lastname): static
     {
-        $this->lname = $lname;
+        $this->lastname = $lastname;
 
         return $this;
     }
