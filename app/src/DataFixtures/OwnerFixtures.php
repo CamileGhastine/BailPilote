@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Address;
 use App\Entity\Owner;
+use App\Repository\UserRepository;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

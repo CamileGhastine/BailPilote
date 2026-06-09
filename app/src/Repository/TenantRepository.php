@@ -32,13 +32,16 @@ class TenantRepository extends ServiceEntityRepository
            ;
        }
 
-    //    public function findOneBySomeField($value): ?Tenant
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findWithUser(int $id): ?Tenant
+    {
+        return $this->createQueryBuilder('t')
+        ->join('t.user', 'u')
+        ->addSelect('u')
+        ->leftJoin('u.owner', 'o')
+        ->addSelect('o')
+        ->where('t.id =:id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 }
