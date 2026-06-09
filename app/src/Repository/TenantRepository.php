@@ -16,17 +16,6 @@ class TenantRepository extends ServiceEntityRepository
         parent::__construct($registry, Tenant::class);
     }
 
-    public function findByLeaseWithUser(int $leaseId): array
-    {
-        return $this->createQueryBuilder('t')
-        ->join('t.user', 'u')
-        ->addSelect('u')
-        ->where('t.lease = :leaseId')
-        ->setParameter('leaseId', $leaseId)
-        ->getQuery()
-        ->getResult();
-    }
-
     public function findWithUser(int $id): ?Tenant
     {
         return $this->createQueryBuilder('t')
