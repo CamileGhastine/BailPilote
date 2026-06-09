@@ -68,7 +68,8 @@ class PropertyController extends AbstractController
                 $uploadedImages[] = $image;
             }
 
-            if (count($uploadedImages) === 1 && !$uploadedImages[0]->getIsPrincipal()) {
+            $hasPrincipal = !empty(array_filter($uploadedImages, fn($img) => $img->getIsPrincipal()));
+            if (!empty($uploadedImages) && !$hasPrincipal) {
                 $uploadedImages[0]->setIsPrincipal(true);
             }
 

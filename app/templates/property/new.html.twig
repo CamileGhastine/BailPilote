@@ -225,10 +225,10 @@
             <div class="card-body bg-primary bg-opacity-10" id="images-container"
                  data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
                  data-index="{{ form.images|length }}"
-                 data-max-images="10">
+                 data-max-images="20">
 
                 <p class="text-muted small mb-3">
-                    Formats acceptés : JPG, PNG, WEBP — 10 Mo maximum par photo, 10 photos au maximum.
+                    Formats acceptés : JPG, PNG, WEBP — 1 Mo maximum par photo, 20 photos au maximum.
                 </p>
 
                 {% for image in form.images %}
