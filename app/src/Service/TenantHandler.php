@@ -22,25 +22,33 @@ class TenantHandler
         // Générer un token unique pour l'invitation
         $token = bin2hex(random_bytes(32));
 
-        $user = new User();
-        $user->setFirstname($form->get('firstname')->getData());
-        $user->setLastname($form->get('lastname')->getData());
-        $user->setEmail($form->get('email')->getData());
-        $user->setPhone($form->get('phone')->getData());
+         // Le User est déjà hydraté par le formulaire via UserType
+
+        $tenant = $form->getData();
+        $user = $tenant->getUser();
         $user->setRoles(['ROLE_TENANT']);
         $user->setIsVerified(false);
         $user->setRegistrationToken($token);
-        $user->setPassword(""); // Pas de mot de passe défini par l'owner
+        $user->setPassword("");
 
-        $tenant = new Tenant();
-        $tenant->setUser($user);
         $tenant->setLease($lease);
 
         $this->em->persist($tenant);
         $this->em->flush();
+        
 
-        // Envoyer l'email si la case est cochée
         if ($form->get('sendEmail')->getData()) {
+            $this->sendInvitationEmail($user, $token);
+        }
+    }
+    
+    public function updateTenantFromForm(FormInterface $form, Tenant $tenant): void
+    {
+            $this->em->flush();
+    }
+
+    private function sendInvitationEmail(User $user, string $token): void
+        {
             $email = (new Email())
             ->from('noreply@bailpilote.fr')
             ->to($user->getEmail())
@@ -57,4 +65,3 @@ class TenantHandler
             $this->mailer->send($email);
         }
     }
-}
