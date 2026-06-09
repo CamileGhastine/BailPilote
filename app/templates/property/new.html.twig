@@ -1,0 +1,426 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un bien{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h1 class="mb-4">Ajouter un bien immobilier</h1>
+
+    {{ form_start(form, {'attr': {'data-turbo': 'false', 'enctype': 'multipart/form-data'}}) }}
+
+        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Informations du bien</h3>
+            </div>
+
+            <div class="card-body bg-primary bg-opacity-10">
+
+                <div class="mb-3">
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.title) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.type) }}
+                    {{ form_widget(form.type, {
+                        'attr': {
+                            'class': 'form-select'
+                        }
+                    }) }}
+                    {{ form_errors(form.type) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.area) }}
+                    {{ form_widget(form.area, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.area) }}
+                </div>
+
+                <div class="mb-3" id="field-numberOfRooms">
+                    {% if form.numberOfRooms is defined %}
+                        {{ form_label(form.numberOfRooms) }}
+                        {{ form_widget(form.numberOfRooms, {
+                            'attr': {
+                                'class': 'form-control'
+                            }
+                        }) }}
+                        {{ form_errors(form.numberOfRooms) }}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3" id="field-numberOfBedrooms">
+                    {% if form.numberOfBedrooms is defined %}
+                        {{ form_label(form.numberOfBedrooms) }}
+                        {{ form_widget(form.numberOfBedrooms, {
+                            'attr': {
+                                'class': 'form-control'
+                            }
+                        }) }}
+                        {{ form_errors(form.numberOfBedrooms) }}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.status) }}
+                    {{ form_widget(form.status, {
+                        'attr': {
+                            'class': 'form-select'
+                        }
+                    }) }}
+                    {{ form_errors(form.status) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div class="mb-3" id="field-ecoNote">
+                    {% if form.ecoNote is defined %}
+                        {{ form_label(form.ecoNote) }}
+                        {{ form_widget(form.ecoNote, {
+                            'attr': {
+                                'class': 'form-select'
+                            }
+                        }) }}
+                        {{ form_errors(form.ecoNote) }}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3" id="field-gesNote">
+                    {% if form.gesNote is defined %}
+                        {{ form_label(form.gesNote) }}
+                        {{ form_widget(form.gesNote, {
+                            'attr': {
+                                'class': 'form-select'
+                            }
+                        }) }}
+                        {{ form_errors(form.gesNote) }}
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card mb-4 border-primary rounded-2 shadow-sm" id="field-criteria">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Critères / équipements</h3>
+            </div>
+
+            <div class="card-body bg-primary bg-opacity-10">
+                {{ form_errors(form.criteria) }}
+
+                <div class="row">
+                    {% for criterion in form.criteria %}
+                        <div class="col-md-4 mb-2" data-criterion="{{ criterion.vars.value }}">
+                            <div class="form-check">
+                                {{ form_widget(criterion, {
+                                    'attr': {
+                                        'class': 'form-check-input'
+                                    }
+                                }) }}
+
+                                {{ form_label(criterion, null, {
+                                    'label_attr': {
+                                        'class': 'form-check-label'
+                                    }
+                                }) }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Adresse du bien</h3>
+            </div>
+
+            <div class="card-body bg-primary bg-opacity-10">
+
+                <div class="mb-3">
+                    {{ form_label(form.address.number) }}
+                    {{ form_widget(form.address.number, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.number) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.street) }}
+                    {{ form_widget(form.address.street, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.street) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.zipCode) }}
+                    {{ form_widget(form.address.zipCode, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.zipCode) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.city) }}
+                    {{ form_widget(form.address.city, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.city) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.addressInfo) }}
+                    {{ form_widget(form.address.addressInfo, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.addressInfo) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.address.country) }}
+                    {{ form_widget(form.address.country, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.address.country) }}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card mb-4 border-primary rounded-2 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0 ">Photos du bien</h3>
+            </div>
+
+            <div class="card-body bg-primary bg-opacity-10" id="images-container"
+                 data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
+                 data-index="{{ form.images|length }}"
+                 data-max-images="20">
+
+                <p class="text-muted small mb-3">
+                    Formats acceptés : JPG, PNG, WEBP — 1 Mo maximum par photo, 20 photos au maximum.
+                </p>
+
+                {% for image in form.images %}
+                    <div class="image-entry border rounded p-3 mb-3">
+                        <div class="mb-2">
+                            {{ form_label(image.file) }}
+                            {{ form_widget(image.file, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(image.file) }}
+                            <img class="image-preview img-thumbnail mt-2 d-none" alt="">
+                        </div>
+                        <div class="mb-2">
+                            {{ form_label(image.alt) }}
+                            {{ form_widget(image.alt, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(image.alt) }}
+                        </div>
+                        <div class="form-check mb-2">
+                            {{ form_widget(image.isPrincipal, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(image.isPrincipal, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                        </div>
+                        <button type="button" class="btn btn-danger btn-sm remove-image">Supprimer</button>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-secondary btn-sm" id="add-image">
+                    + Ajouter une photo
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-3">
+            Enregistrer le bien
+        </button>
+
+    {{ form_end(form) }}
+
+</div>
+
+<script>
+    (function () {
+        const typesWithoutRooms = ['terrain', 'parking'];
+        const roomsField = document.getElementById('field-numberOfRooms');
+        const bedroomsField = document.getElementById('field-numberOfBedrooms');
+        const ecoNoteField = document.getElementById('field-ecoNote');
+        const gesNoteField = document.getElementById('field-gesNote');
+        const typeSelect = document.querySelector('[name$="[type]"]');
+
+        const criteriaHiddenByType = {
+            terrain: ['cuisine_amenagee', 'ascenseur', 'chauffage_central', 'climatisation'],
+        };
+        const criteriaField = document.getElementById('field-criteria');
+        const criterionWrappers = document.querySelectorAll('[data-criterion]');
+
+        function toggleField(field, hide) {
+            field.style.display = hide ? 'none' : '';
+            if (hide) {
+                const input = field.querySelector('input, select');
+                if (input) input.value = '';
+            }
+        }
+
+        function uncheckCriteria(wrappers) {
+            wrappers.forEach((wrapper) => {
+                const checkbox = wrapper.querySelector('input[type="checkbox"]');
+                if (checkbox) checkbox.checked = false;
+            });
+        }
+
+        function toggleCriteriaFields() {
+            const hideSection = typeSelect.value === 'parking';
+            criteriaField.style.display = hideSection ? 'none' : '';
+
+            if (hideSection) {
+                uncheckCriteria(criterionWrappers);
+                return;
+            }
+
+            const hiddenCriteria = criteriaHiddenByType[typeSelect.value] || [];
+            criterionWrappers.forEach((wrapper) => {
+                const hide = hiddenCriteria.includes(wrapper.dataset.criterion);
+                wrapper.style.display = hide ? 'none' : '';
+                if (hide) uncheckCriteria([wrapper]);
+            });
+        }
+
+        function toggleRoomsFields() {
+            const hide = typesWithoutRooms.includes(typeSelect.value);
+            toggleField(roomsField, hide);
+            toggleField(bedroomsField, hide);
+            toggleField(ecoNoteField, hide);
+            toggleField(gesNoteField, hide);
+        }
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', () => {
+                toggleRoomsFields();
+                toggleCriteriaFields();
+            });
+            toggleRoomsFields();
+            toggleCriteriaFields();
+        }
+    })();
+
+    (function () {
+        const container = document.getElementById('images-container');
+        const addBtn = document.getElementById('add-image');
+        if (!container || !addBtn) return;
+
+        const maxImages = parseInt(container.dataset.maxImages);
+        let index = parseInt(container.dataset.index);
+
+        function updateAddButtonState() {
+            const count = container.querySelectorAll('.image-entry').length;
+            const limitReached = count >= maxImages;
+            addBtn.disabled = limitReached;
+            addBtn.textContent = limitReached
+                ? `Limite de ${maxImages} photos atteinte`
+                : '+ Ajouter une photo';
+        }
+
+        function showPreview(fileInput) {
+            const wrapper = fileInput.parentElement;
+            let preview = wrapper.querySelector('.image-preview');
+            if (!preview) {
+                preview = document.createElement('img');
+                preview.className = 'image-preview img-thumbnail mt-2 d-none';
+                preview.alt = '';
+                wrapper.appendChild(preview);
+            }
+
+            const file = fileInput.files && fileInput.files[0];
+            if (!file) {
+                preview.classList.add('d-none');
+                preview.removeAttribute('src');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                preview.src = event.target.result;
+                preview.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        addBtn.addEventListener('click', () => {
+            if (container.querySelectorAll('.image-entry').length >= maxImages) return;
+
+            const prototype = container.dataset.prototype.replace(/__name__/g, index);
+            const div = document.createElement('div');
+            div.className = 'image-entry border rounded p-3 mb-3';
+            div.innerHTML = prototype + '<button type="button" class="btn btn-danger btn-sm remove-image mt-2">Supprimer</button>';
+            container.appendChild(div);
+            index++;
+            updateAddButtonState();
+        });
+
+        container.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-image')) {
+                e.target.closest('.image-entry').remove();
+                updateAddButtonState();
+            }
+        });
+
+        container.addEventListener('change', (e) => {
+            if (e.target.matches('input[type="checkbox"][name*="[isPrincipal]"]') && e.target.checked) {
+                container.querySelectorAll('input[type="checkbox"][name*="[isPrincipal]"]').forEach(cb => {
+                    if (cb !== e.target) cb.checked = false;
+                });
+                return;
+            }
+
+            if (e.target.matches('input[type="file"]')) {
+                showPreview(e.target);
+            }
+        });
+
+        updateAddButtonState();
+    })();
+
+    (function () {
+        const submitBtn = document.querySelector('form button[type="submit"]');
+        if (!submitBtn) return;
+        const form = submitBtn.closest('form');
+        if (!form) return;
+
+        form.addEventListener('submit', () => {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Enregistrement...';
+        });
+    })();
+</script>
+{% endblock %}

@@ -19,13 +19,16 @@ class Image
     #[ORM\Column(length: 255)]
     private string $path;
 
-    #[ORM\Column(length: 255)]
-    private string $alt;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $alt = null;
 
     #[ORM\Column(length: 255)]
     private string $type;
 
-    #[ORM\ManyToOne]
+    #[ORM\Column]
+    private bool $isPrincipal = false;
+
+    #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private Property $property;
 
@@ -58,12 +61,12 @@ class Image
         return $this;
     }
 
-    public function getAlt(): string
+    public function getAlt(): ?string
     {
         return $this->alt;
     }
 
-    public function setAlt(string $alt): static
+    public function setAlt(?string $alt): static
     {
         $this->alt = $alt;
 
@@ -78,6 +81,18 @@ class Image
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getIsPrincipal(): bool
+    {
+        return $this->isPrincipal;
+    }
+
+    public function setIsPrincipal(bool $isPrincipal): static
+    {
+        $this->isPrincipal = $isPrincipal;
 
         return $this;
     }

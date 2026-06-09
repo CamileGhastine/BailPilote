@@ -13,14 +13,14 @@ class Address
     #[ORM\Column]
     private int $id;
 
-    #[ORM\Column]
-    private int $number;
+    #[ORM\Column(length: 10)]
+    private string $number;
 
     #[ORM\Column(length: 255)]
     private string $street;
 
-    #[ORM\Column(name: 'zipCode')]
-    private int $zipCode;
+    #[ORM\Column(name: 'zipCode', length: 10)]
+    private string $zipCode;
 
     #[ORM\Column(name: 'addressInfo', length: 255, nullable: true)]
     private ?string $addressInfo = null;
@@ -36,12 +36,12 @@ class Address
         return $this->id;
     }
 
-    public function getNumber(): int
+    public function getNumber(): string
     {
         return $this->number;
     }
 
-    public function setNumber(int $number): static
+    public function setNumber(string $number): static
     {
         $this->number = $number;
 
@@ -60,24 +60,24 @@ class Address
         return $this;
     }
 
-    public function getZipCode(): int
+    public function getZipCode(): string
     {
         return $this->zipCode;
     }
 
-    public function setZipCode(int $zipCode): static
+    public function setZipCode(string $zipCode): static
     {
         $this->zipCode = $zipCode;
 
         return $this;
     }
 
-    public function getAddressInfo(): string
+    public function getAddressInfo(): ?string
     {
         return $this->addressInfo;
     }
 
-    public function setAddressInfo(string $addressInfo): static
+    public function setAddressInfo(?string $addressInfo): static
     {
         $this->addressInfo = $addressInfo;
 
@@ -96,12 +96,12 @@ class Address
         return $this;
     }
 
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function setCountry(string $country): static
+    public function setCountry(?string $country): static
     {
         $this->country = $country;
 
