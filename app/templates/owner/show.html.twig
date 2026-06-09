@@ -147,7 +147,7 @@
 
                     <div class="card-body bg-primary bg-opacity-10">
 
-                        {#{% if property.tenants is defined and property.tenants|length > 0 %}#}
+                        {% if tenant.lease is defined %}
 
                             <div class="d-flex flex-column gap-3">
 
@@ -240,7 +240,7 @@
 
                             </div>
 
-                        {#{% else %}#}
+                        {% else %}
 
                             <div class="text-center py-4">
                                 <p class="text-muted">
@@ -252,7 +252,7 @@
                                 </a>
                             </div>
 
-                        {#{% endif %}#}
+                        {% endif %}
 
                     </div>
                 </div>

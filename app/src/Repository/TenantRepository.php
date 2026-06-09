@@ -18,7 +18,7 @@ class TenantRepository extends ServiceEntityRepository
     }
 
 
-       public function findWithUserAndLease(Property $property): Tenant
+       public function findWithUserAndLease(Property $property): ?Tenant
        {
            return $this->createQueryBuilder('t')
                ->leftJoin('t.user', 'u')
