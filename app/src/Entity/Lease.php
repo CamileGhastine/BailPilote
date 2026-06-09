@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
 
 #[ORM\Entity(repositoryClass: LeaseRepository::class)]
 class Lease
@@ -28,8 +29,8 @@ class Lease
     #[ORM\Column]
     private int $duration;
 
-    #[ORM\Column(name: 'irlDate', length: 255)]
-    private string $irlDate;
+    #[ORM\Column(name: 'irlDate')]
+    private \DateTimeImmutable $irlDate;
 
     #[ORM\Column]
     private float $irl;
@@ -39,9 +40,6 @@ class Lease
 
     #[ORM\Column (name: 'dateOfPayment')]
     private int $dateOfPayment;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private string $guarantor;
 
     #[ORM\OneToOne(inversedBy: 'lease', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -53,9 +51,19 @@ class Lease
     #[ORM\OneToMany(targetEntity: Tenant::class, mappedBy: 'lease')]
     private Collection $tenant;
 
+    #[ORM\Column (name: 'chargesAmount')]
+    private ?float $chargesAmount = null;
+
+    /**
+     * @var Collection<int, Guarantor>
+     */
+    #[ORM\OneToMany(targetEntity: Guarantor::class, mappedBy: 'lease')]
+    private Collection $guarantors;
+
     public function __construct()
     {
         $this->tenant = new ArrayCollection();
+        $this->guarantors = new ArrayCollection();
     }
 
     public function getId(): int
@@ -111,12 +119,12 @@ class Lease
         return $this;
     }
 
-    public function getIrlDate(): string
+    public function getIrlDate(): \DateTimeImmutable
     {
         return $this->irlDate;
     }
 
-    public function setIrlDate(string $irlDate): static
+    public function setIrlDate(\DateTimeImmutable $irlDate): static
     {
         $this->irlDate = $irlDate;
 
@@ -158,19 +166,7 @@ class Lease
 
         return $this;
     }
-
-    public function getGuarantor(): string
-    {
-        return $this->guarantor;
-    }
-
-    public function setGuarantor(string $guarantor): static
-    {
-        $this->guarantor = $guarantor;
-
-        return $this;
-    }
-
+    
     public function getProperty(): ?Property
     {
         return $this->property;
@@ -207,6 +203,48 @@ class Lease
             // set the owning side to null (unless already changed)
             if ($tenant->getLease() === $this) {
                 $tenant->setLease(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getChargesAmount(): ?float
+    {
+        return $this->chargesAmount;
+    }
+
+    public function setChargesAmount(float $chargesAmount): static
+    {
+        $this->chargesAmount = $chargesAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Guarantor>
+     */
+    public function getGuarantors(): Collection
+    {
+        return $this->guarantors;
+    }
+
+    public function addGuarantor(Guarantor $guarantor): static
+    {
+        if (!$this->guarantors->contains($guarantor)) {
+            $this->guarantors->add($guarantor);
+            $guarantor->setLease($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGuarantor(Guarantor $guarantor): static
+    {
+        if ($this->guarantors->removeElement($guarantor)) {
+            // set the owning side to null (unless already changed)
+            if ($guarantor->getLease() === $this) {
+                $guarantor->setLease(null);
             }
         }
 

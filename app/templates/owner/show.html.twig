@@ -17,37 +17,102 @@
                         Caractéristiques du bien
                     </div>
                     <div class="card-body bg-primary bg-opacity-10">
-                        <div class="bg-light border rounded d-flex align-items-center justify-content-center mb-4"
-                             style="height: 220px;">
-                            <span class="text-muted">Aucune image</span>
+
+                        <div class="position-relative mb-4">
+
+                            <a href="#" class="btn btn-primary btn-sm position-absolute top-0 end-0 m-2 z-1 text-decoration-none">
+                                + Image
+                            </a>
+
+                            {% if property.images is defined and property.images|length > 0 %}
+                                <div id="propertyImagesCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner rounded border">
+
+                                        {% for image in property.images %}
+                                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                                <img src="{{ asset(image.path) }}"
+                                                     class="d-block w-100 object-fit-cover"
+                                                     style="height: 220px;"
+                                                     alt="{{ image.alt|default('Photo du bien') }}">
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+
+                                    <button class="carousel-control-prev"
+                                            type="button"
+                                            data-bs-target="#propertyImagesCarousel"
+                                            data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon"></span>
+                                    </button>
+
+                                    <button class="carousel-control-next"
+                                            type="button"
+                                            data-bs-target="#propertyImagesCarousel"
+                                            data-bs-slide="next">
+                                        <span class="carousel-control-next-icon"></span>
+                                    </button>
+                                </div>
+                            {% else %}
+                                <div class="bg-light border rounded d-flex align-items-center justify-content-center"
+                                     style="height: 220px;">
+                                    <span class="text-muted">Aucune image</span>
+                                </div>
+                            {% endif %}
+
                         </div>
                         <div class="text-center mb-4">
-                            <p class="mb-1 fw-bold">Adresse du bien</p>
-                            <p class="mb-0">00000 Ville</p>
+                            <p class="mb-1 fw-bold">
+                                {# {{ property.address }} #}
+                                Adresse du bien
+                            </p>
+
+                            <p class="mb-0">
+                                {{ property.address.number }} {{ property.address.street ~ ','}} {{ property.address.zipCode }} {{ property.address.city ~ ' - ' ~ property.address.country}}
+                                
+                            </p>
                         </div>
                         <hr>
                         <div class="row text-center mb-4">
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">Type</span>
-                                <span>Appartement</span>
+                                <span>
+                                    {# {{ property.type }} #}
+                                    {{property.type}}
+                                </span>
                             </div>
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">Surface</span>
-                                <span>50 m²</span>
+                                <span>
+                                    {# {{ property.surface }} m² #}
+                                    {{property.area}} m²
+                                </span>
                             </div>
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">Conso énergie</span>
-                                <span>C</span>
+                                <span>
+                                    {# {{ property.energyGrade }} #}
+                                    {{property.ecoNote}}
+                                </span>
                             </div>
                             <div class="col-6 mb-3">
                                 <span class="fw-bold d-block">GES</span>
-                                <span>D</span>
+                                <span>
+                                    {# {{ property.gesGrade }} #}
+                                    {{property.gesNote}}
+                                </span>
                             </div>
                         </div>
                         <hr>
                         <div class="mb-4">
-                            <h6 class="fw-bold text-center mb-3">Description pour l'annonce</h6>
-                            <p class="mb-0">Description du bien immobilier destinée à l'annonce.</p>
+                            <h6 class="fw-bold text-center mb-3">
+                                Description pour l’annonce
+                            </h6>
+
+                            <p class="mb-0">
+                                {# {{ property.description }} #}
+                                {{property.description}}
+                            </p>
                         </div>
                         <div class="text-center">
                             <a href="#" class="btn btn-primary btn-sm">Modifier</a>
@@ -57,25 +122,112 @@
             </div>
 
             {# Colonne centrale : locataires #}
-<div class="col-12 col-lg-4">
-    <div class="card shadow-sm border-primary">
-        <div class="card-header text-center bg-primary text-white fw-bold">
-            Locataires
-        </div>
-        <div class="card-body bg-primary bg-opacity-10">
+            <div class="col-12 col-lg-4">
+                <div class="card shadow-sm border-primary">
+                    <div class="card-header text-center bg-primary text-white fw-bold">
+                        Locataires
+                    </div>
 
-            {% if property.lease and property.lease.tenant|length > 0 %}
-                <div class="d-flex flex-column gap-3">
-                    {% for tenant in property.lease.tenant %}
-                        <div class="card shadow-sm border-primary">
-                            <div class="card-body">
-                                <p class="mb-3">{{ tenant.user.firstname }} {{ tenant.user.lastname }}</p>
-                                <p class="mb-2">{{ tenant.user.email }}</p>
-                                <p class="mb-2">{{ tenant.user.phone }}</p>
-                                <hr>
-                                <p class="mb-2">
-                                    <strong>Loyer HC :</strong>
-                                    {{ property.lease.rentingAmount|number_format(2, ',', ' ') }} €
+                    <div class="card-body bg-primary bg-opacity-10">
+
+                        {% if tenant.lease is defined %}
+
+                            <div class="d-flex flex-column gap-3">
+
+                                {#{% for tenant in property.tenants %}#}
+                                    <div class="card shadow-sm border-primary">
+                                        <div class="card-body">
+
+                                            <p class="mb-3">
+                                                {#{{ tenant.firstName }} {{ tenant.lastName }}#}
+                                                <span class="fw-bold">Nom prénom :</span>
+                                                {{tenant.user.firstname ~' '~ tenant.user.lastname}}
+                                            </p>
+
+                                            <p class="mb-2">
+                                                <span class="fw-bold">Email: </span>
+                                                {{ tenant.user.email }}
+                                            </p>
+
+                                            <p class="mb-2">
+                                                <span class="fw-bold">Téléphone :</span>
+                                                {{ tenant.user.phone }}
+                                            </p>
+
+                                            <hr>
+
+                                            
+
+                                            <p class="mb-2">
+                                                <strong>Loyer HC :</strong>
+                                                {{ tenant.lease.rentingAmount|number_format(2, ',', ' ') ~ ' €' }}
+                                            </p>
+
+                                            <p class="mb-2">
+                                                <strong>Charges :</strong>
+                                                {{ tenant.lease.chargesAmount|number_format(2, ',', ' ') ~ ' €' }}
+                                            </p>
+
+                                            <p class="mb-2">
+                                                <strong>Caution :</strong>
+                                                {{ tenant.lease.securityDeposit|number_format(2, ',', ' ') ~ ' €' }}
+                                            </p>
+
+                                            <div class="mb-2">
+                                                <strong>Garants :</strong>
+
+                                                {% if tenant.lease.guarantors %}
+
+                                                    <ul class="ps-3">
+                                                        {% for guarantor in tenant.lease.guarantors %}
+                                                            <li>
+                                                                {{ guarantor.firstName }} {{ guarantor.lastName }}
+                                                            </li>
+                                                            <li>
+                                                                {{ guarantor.email }} 
+                                                            </li>
+                                                            <li>
+                                                                {{ guarantor.phone }}
+                                                            </li>
+                                                               
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% else %}
+                                                    <span class="text-muted">
+                                                        Aucun garant
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+
+                                            <p class="mb-2">
+                                                <strong>Date du bail :</strong>
+                                                {{ tenant.lease.leasedAt ? tenant.lease.leasedAt|date('d/m/Y' ) : ''}}
+                                                {#{{ tenant.leaseDate ? tenant.leaseDate|date('d/m/Y') : '' }}#}
+                                            </p>
+
+                                            <p class="mb-2">
+                                                <strong>IRL :</strong>
+                                                {{tenant.lease.irl}}
+                                                {#{{ tenant.leaseDuration }}#}
+                                            </p>
+
+                                            <div class="text-center mt-3">
+                                                <a href="#" class="btn btn-primary btn-sm">
+                                                    Modifier
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {#{% endfor %}#}
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="text-center py-4">
+                                <p class="text-muted">
+                                    Aucun locataire n’est encore rattaché à ce bien.
                                 </p>
                                 <p class="mb-2">
                                     <strong>Caution :</strong>
@@ -94,8 +246,10 @@
                                        class="btn btn-primary btn-sm">Modifier</a>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+
+                        {% endif %}
+
+                    </div>
                 </div>
             {% else %}
                 <div class="text-center py-4">

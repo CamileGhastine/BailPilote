@@ -22,7 +22,7 @@ class UserFixtures extends Fixture
                 'firstname' => 'Jean',
                 'lastname'  => 'Dupont',
                 'phone'  => '060606006',
-                'roles'     => ['ROLE_USER'],
+                'roles'     => ['ROLE_OWNER'],
                 'password'  => 'Password123456$',
                 'phone'     => '0600000001',    
             ],
@@ -31,7 +31,7 @@ class UserFixtures extends Fixture
                 'firstname' => 'Alice',
                 'lastname'  => 'Martin',
                 'phone'  => '0101011001',
-                'roles'     => ['ROLE_ADMIN', 'ROLE_USER'],
+                'roles'     => ['ROLE_ADMIN', 'ROLE_OWNER'],
                 'password'  => 'Password123456$',
                 'phone'     => '0600000002',
             ],
@@ -60,7 +60,21 @@ class UserFixtures extends Fixture
             $user->setFirstname($faker->firstName());
             $user->setLastname($faker->lastName());
             $user->setPhone($faker->phoneNumber());
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles(['ROLE_OWNER']);
+            $user->setIsVerified(true);
+            $user->setPassword($this->hasher->hashPassword($user, 'Password123456$'));
+
+            $manager->persist($user);
+            $this->addReference('user_' . $i, $user);
+        }
+
+        for ($i=20 ; $i<40 ; $i++) {
+            $user = new User();
+            $user->setEmail($faker->email());
+            $user->setFirstname($faker->firstName());
+            $user->setLastname($faker->lastName());
+            $user->setPhone($faker->phoneNumber());
+            $user->setRoles(['ROLE_TENANT']);
             $user->setIsVerified(true);
             $user->setPassword($this->hasher->hashPassword($user, 'Password123456$'));
 

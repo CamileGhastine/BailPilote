@@ -16,6 +16,18 @@ class PropertyRepository extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
+       public function findWithAddress(int $id): Object
+       {
+           return $this->createQueryBuilder('p')
+               ->leftJoin('p.address', 'a')
+               ->addSelect('a')
+               ->where('p.id = :id')
+               ->setParameter('id', $id)
+               ->getQuery()
+               ->getOneOrNullResult()
+           ;
+       }
+
     public function findWithLeaseAndTenants(int $id): ?Property
     {
         return $this->createQueryBuilder('p')

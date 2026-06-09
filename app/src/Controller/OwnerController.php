@@ -33,20 +33,28 @@ class OwnerController extends AbstractController
 
         $owner = $ownerRepo->findBy(['user' => $user]);
         $properties = $propertyRepo->findBy(['owner' => $owner]);
-        ($properties);
+        
         return $this->render('owner/index.html.twig', [
             'properties' => $properties,
         ]);
     }
-
-    #[Route('/owner/show', name: 'app_owner_show')]
-    public function show(Request $request): Response
+    
+    #[Route('/owner/show/{id}', name: 'app_owner_show')]
+    public function show(int $id, PropertyRepository $propertyRepo, TenantRepository $tenantRepo): Response
     {
-        $id = $request->query->get('id');
-        $property = $this->propertyRepository->findWithLeaseAndTenants($id);
+        $property = $propertyRepo->findWithAddress($id);
+        $currentUser = $this->getUser();
+        $propertyUser = $property->getOwner()->getUser();
 
+        if ($currentUser != $propertyUser) {
+        return $this->redirectToRoute('app_owner_index');
+        }
+
+        $tenant = $tenantRepo->findWithUserAndLease($property);
+        //dd($tenant);
         return $this->render('owner/show.html.twig', [
             'property' => $property,
+            'tenant' => $tenant,
         ]);
     }
 
