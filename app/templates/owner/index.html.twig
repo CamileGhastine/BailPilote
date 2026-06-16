@@ -10,10 +10,18 @@
         <div class="d-flex flex-column flex-sm-row gap-3 justify-content-around">
             <a class="btn btn-primary btn-lg text-decoration-none rounded-2 order-2 order-sm-1" href="">Mon compte</a>
             <h1 class="text-center order-1 order-sm-2">Mon espace bailleur</h1>
-            <div class="d-flex gap-2 align-items-center justify-content-center bg-primary bg-opacity-10 px-2 rounded order-3">
-                <span class="fs-6">Ajouter un bien</span>
-                <a class="text-decoration-none fs-4 bg-primary bg-opacity-10 rounded-4" href="{{ path('app_property_new') }}">➕</a>
-            </div>
+            {% if owner %}
+                <div class="d-flex gap-2 align-items-center justify-content-center bg-primary bg-opacity-10 px-2 rounded order-3">
+                    <span class="fs-6">Ajouter un bien</span>
+                    <a class="text-decoration-none fs-4 bg-primary bg-opacity-10 rounded-4" href="{{ path('app_property_new') }}">➕</a>
+                </div>
+            {% else %}
+                <div class="d-flex gap-2 align-items-center justify-content-center bg-primary bg-opacity-10 px-2 rounded order-3">
+                    <span class="fs-6">Créer votre profil bailleur</span>
+                    <a class="text-decoration-none fs-4 bg-primary bg-opacity-10 rounded-4" href="{{ path('app_owner_profil') }}">➕</a>
+                </div>                              
+            {% endif %}
+
         </div>
 
         {# Navigation sm/md — barre horizontale sous le header, au-dessus des biens #}

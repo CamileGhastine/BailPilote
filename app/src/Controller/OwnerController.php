@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Owner;
 use App\Entity\Tenant;
+use App\Form\OwnerProfilType;
 use App\Form\TenantType;
 use App\Repository\OwnerRepository;
 use App\Repository\PropertyRepository;
 use App\Repository\TenantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +22,7 @@ class OwnerController extends AbstractController
         private PropertyRepository $propertyRepository,
         private TenantRepository $tenantRepository,
         private TenantHandler $tenantHandler,
+        private EntityManagerInterface $em,
     )
     {
     }
@@ -32,10 +36,13 @@ class OwnerController extends AbstractController
         }
 
         $owner = $ownerRepo->findBy(['user' => $user]);
+
+        if(!$owner) $this->addFlash('info', 'Créez votre profil bailleur avant de pouvoir profiter des fonctionnalités de BailPilote.');
         $properties = $propertyRepo->findBy(['owner' => $owner]);
-        
+
         return $this->render('owner/index.html.twig', [
             'properties' => $properties,
+            'owner' => $owner
         ]);
     }
     
@@ -100,4 +107,47 @@ class OwnerController extends AbstractController
             'isEdit' => $tenantId !== null,
         ]);
     }
+
+    #[Route('/owner/profil', name: 'app_owner_profil')]
+    public function createProfil(Request $request, OwnerRepository $ownerRepo): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        if ($ownerRepo->findOneBy(['user' => $user])) {
+            return $this->redirectToRoute('app_owner_index');
+        }
+
+        $form = $this->createForm(OwnerProfilType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $user->setFirstname($data['firstname']);
+            $user->setLastname($data['lastname']);
+            $user->setPhone($data['phone'] ?? null);
+
+            $owner = new Owner();
+            $owner->setUser($user);
+
+            $addressData = $request->request->all()['owner_profil'] ?? [];
+            $street = trim($addressData['address']['street'] ?? '');
+            if ($street !== '') {
+                $owner->setAddress($data['address']);
+            }
+
+            $this->em->persist($owner);
+            $this->em->flush();
+
+            $this->addFlash('success', 'Votre profil bailleur a été créé avec succès.');
+
+            return $this->redirectToRoute('app_owner_index');
+        }
+
+        return $this->render('owner/create_profil.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
 }

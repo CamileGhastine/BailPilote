@@ -18,8 +18,8 @@ class Owner
     private User $user;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private Address $address;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Address $address = null;
 
     public function getId(): int
     {
@@ -38,12 +38,12 @@ class Owner
         return $this;
     }
 
-    public function getAddress(): Address
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    public function setAddress(Address $address): static
+    public function setAddress(?Address $address): static
     {
         $this->address = $address;
 

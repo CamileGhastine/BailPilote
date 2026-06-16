@@ -32,7 +32,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
             $property->setTitle($property->getType() .' '. $faker->randomElement($quality) .' '. $faker->randomElement($extras))
                 ->setArea($faker->numberBetween(20, 100))
                 ->setDescription($faker->paragraph())
-                ->setCriteria($faker->randomElement($criteria))
+                ->setCriteria([$faker->randomElement($criteria)])
                 ->setStatus($faker->randomElement($statuses))
                 ->setNumberOfRooms($faker->numberBetween(1, 5))
                 ->setNumberOfBedrooms($faker->numberBetween(1, 2))

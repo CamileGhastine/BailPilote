@@ -17,9 +17,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PropertyController extends AbstractController
 {
-    #[Route('/property/new', name: 'app_property_new', methods: ['GET', 'POST'])]
+    #[Route('/property/new/{id?}', name: 'app_property_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function new(
+        ?Property $property,
         Request $request,
         EntityManagerInterface $entityManager,
         OwnerRepository $ownerRepository,
@@ -27,7 +28,7 @@ class PropertyController extends AbstractController
         #[Autowire('%property_images_directory%')] string $imagesDirectory,
         #[Autowire('%property_images_web_path%')] string $imagesWebPath,
     ): Response {
-        $property = new Property();
+        if (!$property) $property = new Property;
 
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
@@ -78,7 +79,7 @@ class PropertyController extends AbstractController
 
             $this->addFlash('success', 'Le bien immobilier a bien été créé.');
 
-            return $this->redirectToRoute('app_owner_show');
+            return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
         }
 
         return $this->render('property/new.html.twig', [

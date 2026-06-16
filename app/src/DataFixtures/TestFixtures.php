@@ -68,7 +68,7 @@ class TestFixtures extends Fixture
         $property->setEcoNote('B');
         $property->setGesNote('C');
         $property->setDescription('Un bel appartement situé au cœur de Paris.');
-        $property->setCriteria('Proche des transports, Lumineux, Calme');
+        $property->setCriteria(['Proche des transports, Lumineux, Calme']);
         $property->setStatus('disponible');
         $property->setOwner($owner);
         $property->setAddress($propertyAddress);

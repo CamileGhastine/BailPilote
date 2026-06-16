@@ -115,7 +115,7 @@
                             </p>
                         </div>
                         <div class="text-center">
-                            <a href="#" class="btn btn-primary btn-sm">Modifier</a>
+                            <a href="{{ path('app_property_new', {id: property.id})}}" class="btn btn-primary btn-sm">Modifier</a>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
 
                     <div class="card-body bg-primary bg-opacity-10">
 
-                        {% if tenant.lease is defined %}
+                        {% if tenant is not null %}
 
                             <div class="d-flex flex-column gap-3">
 
@@ -229,33 +229,12 @@
                                 <p class="text-muted">
                                     Aucun locataire n’est encore rattaché à ce bien.
                                 </p>
-                                <p class="mb-2">
-                                    <strong>Caution :</strong>
-                                    {{ property.lease.securityDeposit|number_format(2, ',', ' ') }} €
-                                </p>
-                                <p class="mb-2">
-                                    <strong>Date du bail :</strong>
-                                    {{ property.lease.leasedAt|date('d/m/Y') }}
-                                </p>
-                                <p class="mb-2">
-                                    <strong>IRL :</strong>
-                                    {{ property.lease.irl }}
-                                </p>
-                                <div class="text-center mt-3">
-                                    <a href="{{ path('app_owner_save_tenant', {'propertyId': property.id, 'id': tenant.id}) }}"
-                                       class="btn btn-primary btn-sm">Modifier</a>
-                                </div>
                             </div>
 
                         {% endif %}
 
                     </div>
                 </div>
-            {% else %}
-                <div class="text-center py-4">
-                    <p class="text-muted">Aucun locataire n'est encore rattaché à ce bien.</p>
-                </div>
-            {% endif %}
 
             <div class="text-center mt-3">
                 <a href="{{ path('app_owner_save_tenant', {'propertyId': property.id}) }}"
@@ -264,9 +243,7 @@
                 </a>
             </div>
 
-        </div>
-    </div>
-</div>
+            </div>
 
             {# Colonne droite #}
             <div class="col-12 col-lg-4">
