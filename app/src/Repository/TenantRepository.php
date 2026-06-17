@@ -18,19 +18,19 @@ class TenantRepository extends ServiceEntityRepository
     }
 
 
-       public function findWithUserAndLease(Property $property): ?Tenant
-       {
-           return $this->createQueryBuilder('t')
-               ->leftJoin('t.user', 'u')
-               ->addSelect('u')
-               ->leftJoin('t.lease', 'l')
-               ->addSelect('l')
-               ->where('l.property = :property')
-               ->setParameter('property', $property)
-               ->getQuery()
-               ->getOneOrNullResult()
-           ;
-       }
+    public function findWithUserAndLease(Property $property): array
+    {
+        return $this->createQueryBuilder('t')
+            ->leftJoin('t.user', 'u')
+            ->addSelect('u')
+            ->leftJoin('t.lease', 'l')
+            ->addSelect('l')
+            ->where('l.property = :property')
+            ->setParameter('property', $property)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     public function findWithUser(int $id): ?Tenant
     {

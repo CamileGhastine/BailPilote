@@ -57,11 +57,11 @@ class OwnerController extends AbstractController
         return $this->redirectToRoute('app_owner_index');
         }
 
-        $tenant = $tenantRepo->findWithUserAndLease($property);
-        //dd($tenant);
+        $tenants = $tenantRepo->findWithUserAndLease($property);
+
         return $this->render('owner/show.html.twig', [
             'property' => $property,
-            'tenant' => $tenant,
+            'tenants' => $tenants,
         ]);
     }
 
@@ -73,12 +73,6 @@ class OwnerController extends AbstractController
         $tenantId = $request->query->get('id');
         
         $property = $this->propertyRepository->find($propertyId);
-        $lease = $property->getLease();
-
-        if (!$lease) {
-            $this->addFlash('danger', 'Aucun bail associé à cette propriété.');
-            return $this->redirectToRoute('app_owner_show', ['id' => $property->getId()]);
-        }
 
         $tenant = $tenantId
             ? $this->tenantRepository->findWithUser($tenantId)
@@ -93,7 +87,7 @@ class OwnerController extends AbstractController
                 $this->tenantHandler->updateTenantFromForm($form, $tenant);
                 $this->addFlash('success', 'Locataire mis à jour avec succès.');
             } else {
-                $this->tenantHandler->createTenantFromForm($form, $lease);
+                $this->tenantHandler->createTenantFromForm($form, $property);
                 $this->addFlash('success', 'Locataire ajouté avec succès.');
             }
 

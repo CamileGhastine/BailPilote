@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Lease;
+use App\Entity\Property;
 use App\Entity\Tenant;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,12 +17,9 @@ class TenantHandler
         private MailerInterface $mailer,
     ) {}
 
-    public function createTenantFromForm(FormInterface $form, Lease $lease): void
-    {   
-        // Générer un token unique pour l'invitation
+    public function createTenantFromForm(FormInterface $form, Property $property): void
+    {
         $token = bin2hex(random_bytes(32));
-
-         // Le User est déjà hydraté par le formulaire via UserType
 
         $tenant = $form->getData();
         $user = $tenant->getUser();
@@ -31,11 +28,13 @@ class TenantHandler
         $user->setRegistrationToken($token);
         $user->setPassword("");
 
-        $tenant->setLease($lease);
+        $lease = $property->getLease();
+        if ($lease) {
+            $tenant->setLease($lease);
+        }
 
         $this->em->persist($tenant);
         $this->em->flush();
-        
 
         if ($form->get('sendEmail')->getData()) {
             $this->sendInvitationEmail($user, $token);

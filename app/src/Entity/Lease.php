@@ -29,11 +29,11 @@ class Lease
     #[ORM\Column]
     private int $duration;
 
-    #[ORM\Column(name: 'irlDate')]
-    private \DateTimeImmutable $irlDate;
+    #[ORM\Column(name: 'irlPeriod', length: 7)]
+    private string $irlPeriod;
 
-    #[ORM\Column]
-    private float $irl;
+    #[ORM\Column(name: 'irlValue')]
+    private float $irlValue;
 
     #[ORM\Column (name: 'securityDeposit')]
     private float $securityDeposit;
@@ -119,26 +119,26 @@ class Lease
         return $this;
     }
 
-    public function getIrlDate(): \DateTimeImmutable
+    public function getIrlPeriod(): string
     {
-        return $this->irlDate;
+        return $this->irlPeriod;
     }
 
-    public function setIrlDate(\DateTimeImmutable $irlDate): static
+    public function setIrlPeriod(string $irlPeriod): static
     {
-        $this->irlDate = $irlDate;
+        $this->irlPeriod = $irlPeriod;
 
         return $this;
     }
 
-    public function getIrl(): float
+    public function getIrlValue(): float
     {
-        return $this->irl;
+        return $this->irlValue;
     }
 
-    public function setIrl(float $irl): static
+    public function setIrlValue(float $irlValue): static
     {
-        $this->irl = $irl;
+        $this->irlValue = $irlValue;
 
         return $this;
     }

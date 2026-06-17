@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Guarantor;
 use App\Entity\Lease;
 use App\Entity\Property;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,7 +13,7 @@ class LeaseFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $types = ['Location vide', 'Location meublée', 'Location étudiante', 'Location saisonnière', 'Bail mobilité', 'Bail commercial', 'Bail professionnel'];
+        $types = ['vide', 'meuble', 'commercial'];
 
 
         $faker = Factory::create();
@@ -23,14 +22,15 @@ class LeaseFixtures extends Fixture implements DependentFixtureInterface
             $property = $this->getReference('property_'. $i*2, Property::class);
             
             $leaseAt = new \DateTimeImmutable($faker->dateTimeBetween('-4 years', 'now')->format('d-m-Y'));            
-            $irlDate = new \DateTimeImmutable ($faker->dateTimeBetween('-3 years', 'now')->format('d-m-Y'));            
-            
+            $quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            $irlPeriod = $faker->numberBetween(2022, 2025) . '-' . $faker->randomElement($quarters);
+
             $lease = (new Lease())
                 ->setType($faker->randomElement($types))
                 ->setLeasedAt($leaseAt)
                 ->setDuration($faker->numberBetween(3, 24))
-                ->setIrlDate($irlDate)
-                ->setIrl($faker->randomFloat(2, 125, 160))
+                ->setIrlPeriod($irlPeriod)
+                ->setIrlValue($faker->randomFloat(2, 125, 160))
             ;
             $lease
                 ->setDateOfPayment($faker->numberBetween(3, 14))
