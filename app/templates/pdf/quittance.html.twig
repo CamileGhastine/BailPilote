@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: DejaVu Sans, sans-serif; font-size: 14px; color: #212529; }
+        h1 { font-size: 20px; text-align: center; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        td { padding: 6px 0; vertical-align: top; }
+        .label { font-weight: bold; width: 180px; }
+        .amount-table { border: 1px solid #212529; }
+        .amount-table td { padding: 8px 12px; border-bottom: 1px solid #dee2e6; }
+        .amount-table tr:last-child td { border-bottom: none; font-weight: bold; }
+        .footer { margin-top: 60px; font-size: 12px; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <h1>Quittance de loyer</h1>
+
+    <table>
+        <tr>
+            <td class="label">Bailleur :</td>
+            <td>{{ property.owner.user.firstname }} {{ property.owner.user.lastname }}</td>
+        </tr>
+        <tr>
+            <td class="label">Locataire(s) :</td>
+            <td>
+                {% for tenant in lease.tenant %}
+                    {{ tenant.user.firstname }} {{ tenant.user.lastname }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Bien loué :</td>
+            <td>{{ property.address.number }} {{ property.address.street }}, {{ property.address.zipCode }} {{ property.address.city }}</td>
+        </tr>
+        <tr>
+            <td class="label">Période :</td>
+            <td>{{ payment.period|date('F Y') }}</td>
+        </tr>
+    </table>
+
+    <table class="amount-table">
+        <tr>
+            <td>Loyer hors charges</td>
+            <td>{{ lease.rentingAmount|number_format(2, ',', ' ') }} €</td>
+        </tr>
+        <tr>
+            <td>Charges</td>
+            <td>{{ lease.chargesAmount ? lease.chargesAmount|number_format(2, ',', ' ') ~ ' €' : '0,00 €' }}</td>
+        </tr>
+        <tr>
+            <td>Total payé</td>
+            <td>{{ payment.amount|number_format(2, ',', ' ') }} €</td>
+        </tr>
+    </table>
+
+    <p>
+        Je soussigné(e) {{ property.owner.user.firstname }} {{ property.owner.user.lastname }}, bailleur, déclare avoir reçu
+        la somme de {{ payment.amount|number_format(2, ',', ' ') }} € au titre du loyer et des charges du logement désigné
+        ci-dessus, pour la période de location du mois de {{ payment.period|date('F Y') }}, et en donne quittance.
+    </p>
+
+    <p>Fait pour servir et valoir ce que de droit.</p>
+
+    <div class="footer">
+        Quittance générée le {{ payment.receiptGeneratedAt|default(date())|date('d/m/Y') }}.
+    </div>
+</body>
+</html>

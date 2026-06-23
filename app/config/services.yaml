@@ -9,6 +9,7 @@
 parameters:
     property_images_directory: '%kernel.project_dir%/public/uploads/properties'
     property_images_web_path: 'uploads/properties'
+    receipts_directory: '%kernel.project_dir%/var/receipts'
 
 services:
     # default configuration for services in *this* file

@@ -60,10 +60,17 @@ class Lease
     #[ORM\OneToMany(targetEntity: Guarantor::class, mappedBy: 'lease')]
     private Collection $guarantors;
 
+    /**
+     * @var Collection<int, Payment>
+     */
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'lease')]
+    private Collection $payments;
+
     public function __construct()
     {
         $this->tenant = new ArrayCollection();
         $this->guarantors = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): int
@@ -246,6 +253,24 @@ class Lease
             if ($guarantor->getLease() === $this) {
                 $guarantor->setLease(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): static
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $payment->setLease($this);
         }
 
         return $this;

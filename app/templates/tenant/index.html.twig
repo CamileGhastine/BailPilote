@@ -1,0 +1,193 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon espace locataire{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+
+        <h1 class="text-center mb-5">Mon logement</h1>
+
+        {% if not lease %}
+            <div class="text-center py-4">
+                <p class="text-muted">Aucun bail n'est rattaché à votre compte pour le moment.</p>
+            </div>
+        {% else %}
+            <div class="row g-5 align-items-start">
+
+                {# Colonne gauche #}
+                <div class="col-12 col-lg-4">
+                    <div class="card border-primary rounded border border-2 shadow-sm">
+                        <div class="card-header text-center bg-primary text-white fw-bold">
+                            Caractéristiques du bien
+                        </div>
+                        <div class="card-body bg-primary bg-opacity-10">
+
+                            <div class="mb-4">
+
+                                {% if property.images is defined and property.images|length > 0 %}
+                                    <div id="propertyImagesCarousel" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner rounded border">
+
+                                            {% for image in property.images %}
+                                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                                    <img src="{{ asset(image.path) }}"
+                                                         class="d-block w-100 object-fit-cover"
+                                                         style="height: 220px;"
+                                                         alt="{{ image.alt|default('Photo du bien') }}">
+                                                </div>
+                                            {% endfor %}
+
+                                        </div>
+
+                                        <button class="carousel-control-prev"
+                                                type="button"
+                                                data-bs-target="#propertyImagesCarousel"
+                                                data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </button>
+
+                                        <button class="carousel-control-next"
+                                                type="button"
+                                                data-bs-target="#propertyImagesCarousel"
+                                                data-bs-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <div class="bg-light border rounded d-flex align-items-center justify-content-center"
+                                         style="height: 220px;">
+                                        <span class="text-muted">Aucune image</span>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                            <div class="text-center mb-4">
+                                <p class="mb-1 fw-bold">Adresse du bien</p>
+
+                                <p class="mb-0">
+                                    {{ property.address.number }} {{ property.address.street ~ ','}} {{ property.address.zipCode }} {{ property.address.city ~ ' - ' ~ property.address.country}}
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="row text-center mb-4">
+                                <div class="col-6 mb-3">
+                                    <span class="fw-bold d-block">Type</span>
+                                    <span>{{ property.type }}</span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <span class="fw-bold d-block">Surface</span>
+                                    <span>{{ property.area }} m²</span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <span class="fw-bold d-block">Conso énergie</span>
+                                    <span>{{ property.ecoNote }}</span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <span class="fw-bold d-block">GES</span>
+                                    <span>{{ property.gesNote }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Colonne centrale : bail #}
+                <div class="col-12 col-lg-4">
+
+                    <div class="card shadow-sm border-primary">
+                        <div class="card-header text-center bg-primary text-white fw-bold">
+                            Bail
+                        </div>
+                        <div class="card-body bg-primary bg-opacity-10">
+                            <p class="mb-2"><strong>Type :</strong> {{ lease.type }}</p>
+                            <p class="mb-2"><strong>Date de début :</strong> {{ lease.leasedAt|date('d/m/Y') }}</p>
+                            <p class="mb-2"><strong>Durée :</strong> {{ lease.duration }} mois</p>
+                            <p class="mb-2"><strong>Loyer HC :</strong> {{ lease.rentingAmount|number_format(2, ',', ' ') }} €</p>
+                            <p class="mb-2"><strong>Charges :</strong> {{ lease.chargesAmount ? lease.chargesAmount|number_format(2, ',', ' ') ~ ' €' : '-' }}</p>
+                            <p class="mb-2"><strong>Dépôt de garantie :</strong> {{ lease.securityDeposit|number_format(2, ',', ' ') }} €</p>
+                            <p class="mb-2"><strong>Jour de paiement :</strong> le {{ lease.dateOfPayment }}</p>
+                            <p class="mb-2"><strong>IRL :</strong> {{ lease.irlValue }} ({{ lease.irlPeriod|replace({'-Q': '-T'}) }})</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                {# Colonne droite #}
+                <div class="col-12 col-lg-4">
+                    <div class="d-flex flex-column gap-4">
+
+                        <div class="card border-info shadow-sm">
+                            <div class="card-header text-center fw-bold">Messagerie</div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                         style="width: 40px; height: 40px;">B</div>
+                                    <p class="fw-bold mb-0">Bailleur</p>
+                                </div>
+                                <div class="border rounded bg-light p-3 mb-3" style="height: 250px; overflow-y: auto;"></div>
+                                <form method="post" action="#">
+                                    <div class="input-group">
+                                        <input type="text" name="message" class="form-control form-control-sm"
+                                               placeholder="Écrire un message...">
+                                        <button class="btn btn-primary btn-sm" type="submit">Envoyer</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-warning">
+                            <div class="card-header text-center fw-bold">Notifications</div>
+                            <div class="card-body">
+                                <p class="text-muted text-center mb-0">Aucune nouvelle notification.</p>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-info">
+                            <div class="card-header text-center fw-bold">Quittances</div>
+                            <div class="card-body">
+                                {% if years|length > 0 %}
+                                    <form method="get" action="{{ path('app_tenant_index') }}" class="mb-3">
+                                        <label for="quittanceYear" class="form-label fw-bold small mb-1">Année</label>
+                                        <select id="quittanceYear" name="year" class="form-select form-select-sm" onchange="this.form.submit()">
+                                            {% for year in years %}
+                                                <option value="{{ year }}" {{ year == selectedYear ? 'selected' : '' }}>{{ year }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </form>
+                                {% endif %}
+                                {% if paymentsSchedule|length > 0 %}
+                                    <div class="d-flex flex-column gap-2">
+                                        {% for entry in paymentsSchedule %}
+                                            {% set payment = entry.payment %}
+                                            {% set paid = payment and payment.paid %}
+                                            <div class="border rounded p-2 d-flex justify-content-between align-items-center bg-white">
+                                                <div class="">
+                                                    <span class="fw-bold d-inline d-lg-block">{{ entry.period|date('F Y') }}</span>
+                                                    <span class="badge {{ paid ? 'bg-success' : 'bg-secondary' }} ms-2 ">
+                                                        {{ paid ? 'Payé' : 'Non payé' }}
+                                                    </span>
+                                                </div>
+                                                {% if paid %}
+                                                    <a href="{{ path('app_tenant_payment_quittance', {period: entry.period|date('Y-m')}) }}"
+                                                       class="btn btn-primary btn-sm">Télécharger</a>
+                                                {% else %}
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm" disabled>Télécharger</button>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted text-center mb-0">Aucune quittance à afficher pour {{ selectedYear }}.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

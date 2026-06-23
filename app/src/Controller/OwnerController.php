@@ -7,6 +7,7 @@ use App\Entity\Tenant;
 use App\Form\OwnerProfilType;
 use App\Form\TenantType;
 use App\Repository\OwnerRepository;
+use App\Repository\PaymentRepository;
 use App\Repository\PropertyRepository;
 use App\Repository\TenantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,11 +18,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Service\TenantHandler;
 
 class OwnerController extends AbstractController
-{   
+{
     public function __construct(
         private PropertyRepository $propertyRepository,
         private TenantRepository $tenantRepository,
         private TenantHandler $tenantHandler,
+        private PaymentRepository $paymentRepository,
         private EntityManagerInterface $em,
     )
     {
@@ -47,7 +49,7 @@ class OwnerController extends AbstractController
     }
     
     #[Route('/owner/show/{id}', name: 'app_owner_show')]
-    public function show(int $id, PropertyRepository $propertyRepo, TenantRepository $tenantRepo): Response
+    public function show(int $id, PropertyRepository $propertyRepo, TenantRepository $tenantRepo, Request $request): Response
     {
         $property = $propertyRepo->findWithAddress($id);
         $currentUser = $this->getUser();
@@ -59,9 +61,33 @@ class OwnerController extends AbstractController
 
         $tenants = $tenantRepo->findWithUserAndLease($property);
 
+        $lease = $property->getLease();
+        $currentYear = (int) (new \DateTimeImmutable())->format('Y');
+        $years = [];
+        $selectedYear = $currentYear;
+        $paymentsSchedule = [];
+
+        if ($lease) {
+            $startYear = (int) $lease->getLeasedAt()->format('Y');
+            for ($year = $currentYear; $year >= $startYear; $year--) {
+                $years[] = $year;
+            }
+
+            $requestedYear = $request->query->getInt('year', $currentYear);
+            $selectedYear = in_array($requestedYear, $years, true) ? $requestedYear : $currentYear;
+
+            $paymentsSchedule = array_values(array_filter(
+                $this->paymentRepository->buildSchedule($lease),
+                fn (array $entry) => (int) $entry['period']->format('Y') === $selectedYear
+            ));
+        }
+
         return $this->render('owner/show.html.twig', [
             'property' => $property,
             'tenants' => $tenants,
+            'paymentsSchedule' => $paymentsSchedule,
+            'years' => $years,
+            'selectedYear' => $selectedYear,
         ]);
     }
 
