@@ -269,22 +269,26 @@
                                         {% set paid = payment and payment.paid %}
                                         <div class="border rounded p-2 d-flex justify-content-between align-items-center">
                                             <div>
-                                                <span class="fw-bold d-inline {{ paid ? '' : 'd-lg-block'}}">{{ entry.period|date('F Y') }}</span>
+                                                <span class="fw-bold d-inline {{ paid ? '' : 'd-lg-block'}}">{{ entry.period|month_year_fr }}</span>
                                                 <span class="badge {{ paid ? 'bg-success' : 'bg-secondary' }} ms-2">
                                                     {{ paid ? 'Payé' : 'Non payé' }}
                                                 </span>
                                             </div>
                                             <div class="d-flex gap-2">
                                                 {% if not paid %}
-                                                    {% if entry.period > date('today') %}
+                                                    {% if not canMarkPaid %}
                                                         <button type="button" class="btn btn-outline-success btn-sm" disabled
-                                                                title="Disponible à partir du {{ entry.period|date('d/m/Y') }}">
+                                                                title="Disponible à partir du {{ oldestUnpaidDueDate|date('d/m/Y') }}">
                                                             Marquer payé
                                                         </button>
                                                     {% else %}
-                                                        <form method="post" action="{{ path('app_owner_payment_mark_paid', {leaseId: property.lease.id, period: entry.period|date('Y-m')}) }}">
-                                                            <input type="hidden" name="_token" value="{{ csrf_token('mark_paid_' ~ property.lease.id ~ '_' ~ entry.period|date('Y-m')) }}">
-                                                            <button type="submit" class="btn btn-outline-success btn-sm">Marquer payé</button>
+                                                        <form method="post" action="{{ path('app_owner_payment_mark_paid', {leaseId: property.lease.id}) }}">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('mark_paid_' ~ property.lease.id) }}">
+                                                            <input type="hidden" name="clicked_period" value="{{ entry.period|date('Y-m') }}">
+                                                            <button type="submit" class="btn btn-outline-success btn-sm"
+                                                                    title="Marquera le mois de {{ oldestUnpaidPeriod|month_year_fr }} comme payé">
+                                                                Marquer payé
+                                                            </button>
                                                         </form>
                                                     {% endif %}
                                                 {% endif %}

@@ -76,7 +76,7 @@ class TenantController extends AbstractController
             throw $this->createNotFoundException('Période invalide.');
         }
 
-        $payment = $this->paymentRepository->findOneByLeaseAndPeriod($lease, $this->paymentRepository->dueDateFor($lease, $date));
+        $payment = $this->paymentRepository->findOneByLeaseAndPeriod($lease, $this->paymentRepository->periodFor($date));
 
         if (!$payment || !$payment->isPaid()) {
             throw $this->createAccessDeniedException("Ce mois n'est pas encore marqué comme payé.");

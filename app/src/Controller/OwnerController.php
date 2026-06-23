@@ -66,6 +66,9 @@ class OwnerController extends AbstractController
         $years = [];
         $selectedYear = $currentYear;
         $paymentsSchedule = [];
+        $oldestUnpaidPeriod = null;
+        $oldestUnpaidDueDate = null;
+        $canMarkPaid = false;
 
         if ($lease) {
             $startYear = (int) $lease->getLeasedAt()->format('Y');
@@ -76,10 +79,23 @@ class OwnerController extends AbstractController
             $requestedYear = $request->query->getInt('year', $currentYear);
             $selectedYear = in_array($requestedYear, $years, true) ? $requestedYear : $currentYear;
 
+            $fullSchedule = $this->paymentRepository->buildSchedule($lease);
+
             $paymentsSchedule = array_values(array_filter(
-                $this->paymentRepository->buildSchedule($lease),
+                $fullSchedule,
                 fn (array $entry) => (int) $entry['period']->format('Y') === $selectedYear
             ));
+
+            for ($i = count($fullSchedule) - 1; $i >= 0; $i--) {
+                $payment = $fullSchedule[$i]['payment'];
+                if (!$payment || !$payment->isPaid()) {
+                    $oldestUnpaidPeriod = $fullSchedule[$i]['period'];
+                    $oldestUnpaidDueDate = $fullSchedule[$i]['dueDate'];
+                    break;
+                }
+            }
+
+            $canMarkPaid = $oldestUnpaidDueDate !== null && $oldestUnpaidDueDate <= new \DateTimeImmutable('today');
         }
 
         return $this->render('owner/show.html.twig', [
@@ -88,6 +104,9 @@ class OwnerController extends AbstractController
             'paymentsSchedule' => $paymentsSchedule,
             'years' => $years,
             'selectedYear' => $selectedYear,
+            'oldestUnpaidPeriod' => $oldestUnpaidPeriod,
+            'oldestUnpaidDueDate' => $oldestUnpaidDueDate,
+            'canMarkPaid' => $canMarkPaid,
         ]);
     }
 

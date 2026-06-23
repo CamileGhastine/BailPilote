@@ -10,6 +10,7 @@ use App\Repository\PaymentRepository;
 use App\Repository\PropertyRepository;
 use App\Service\InseeIrlService;
 use App\Service\QuittanceGenerator;
+use App\Util\FrenchDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -84,7 +85,7 @@ final class LeaseController extends AbstractController
     public function ownerDownloadQuittance(int $leaseId, string $period): Response
     {
         $lease = $this->getOwnedLease($leaseId);
-        $payment = $this->findOrCreatePayment($lease, $this->parsePeriod($lease, $period));
+        $payment = $this->findOrCreatePayment($lease, $this->parsePeriod($period));
 
         $path = $this->quittanceGenerator->generate($payment);
         $this->em->flush();
@@ -92,16 +93,24 @@ final class LeaseController extends AbstractController
         return $this->fileDownloadResponse($path, $period);
     }
 
-    #[Route('/owner/lease/{leaseId}/payment/{period}/mark-paid', name: 'app_owner_payment_mark_paid', requirements: ['period' => '\d{4}-\d{2}'], methods: ['POST'])]
-    public function ownerMarkPaid(int $leaseId, string $period, Request $request): Response
+    #[Route('/owner/lease/{leaseId}/payment/mark-paid', name: 'app_owner_payment_mark_paid', methods: ['POST'])]
+    public function ownerMarkPaid(int $leaseId, Request $request): Response
     {
         $lease = $this->getOwnedLease($leaseId);
 
-        if (!$this->isCsrfTokenValid('mark_paid_' . $leaseId . '_' . $period, $request->request->get('_token'))) {
+        if (!$this->isCsrfTokenValid('mark_paid_' . $leaseId, $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Jeton CSRF invalide.');
         }
 
-        $dueDate = $this->parsePeriod($lease, $period);
+        $period = $this->paymentRepository->findOldestUnpaidPeriod($lease);
+
+        if ($period === null) {
+            $this->addFlash('info', 'Tous les mois sont déjà payés.');
+
+            return $this->redirectToRoute('app_owner_show', ['id' => $lease->getProperty()->getId()]);
+        }
+
+        $dueDate = $this->paymentRepository->dueDateFor($lease, $period);
 
         if ($dueDate > new \DateTimeImmutable('today')) {
             $this->addFlash('error', "Ce mois ne peut pas encore être marqué comme payé : l'échéance n'est pas atteinte.");
@@ -109,15 +118,29 @@ final class LeaseController extends AbstractController
             return $this->redirectToRoute('app_owner_show', ['id' => $lease->getProperty()->getId()]);
         }
 
-        $payment = $this->findOrCreatePayment($lease, $dueDate);
+        $clickedPeriod = $request->request->get('clicked_period');
+        if ($clickedPeriod) {
+            $clickedMonth = $this->parsePeriod($clickedPeriod);
+            if ($clickedMonth != $period) {
+                $this->addFlash('warning', sprintf(
+                    "Vous ne pouvez pas marquer le mois de %s comme payé : des mois antérieurs sont encore impayés.",
+                    FrenchDate::monthYear($clickedMonth)
+                ));
+            }
+        }
+
+        $payment = $this->findOrCreatePayment($lease, $period);
 
         $payment->setStatus(Payment::STATUS_PAID);
         $payment->setPaidAt(new \DateTimeImmutable());
         $this->em->flush();
 
-        $this->addFlash('success', 'Le mois a été marqué comme payé.');
+        $this->addFlash('success', sprintf('Le mois de %s a été marqué comme payé.', FrenchDate::monthYear($period)));
 
-        return $this->redirectToRoute('app_owner_show', ['id' => $lease->getProperty()->getId()]);
+        return $this->redirectToRoute('app_owner_show', [
+            'id' => $lease->getProperty()->getId(),
+            'year' => (int) $period->format('Y'),
+        ]);
     }
 
     private function getOwnedLease(int $leaseId): Lease
@@ -155,7 +178,7 @@ final class LeaseController extends AbstractController
         return $payment;
     }
 
-    private function parsePeriod(Lease $lease, string $period): \DateTimeImmutable
+    private function parsePeriod(string $period): \DateTimeImmutable
     {
         $date = \DateTimeImmutable::createFromFormat('Y-m-d', $period . '-01');
 
@@ -163,7 +186,7 @@ final class LeaseController extends AbstractController
             throw $this->createNotFoundException('Période invalide.');
         }
 
-        return $this->paymentRepository->dueDateFor($lease, $date);
+        return $this->paymentRepository->periodFor($date);
     }
 
     private function fileDownloadResponse(string $path, string $period): Response

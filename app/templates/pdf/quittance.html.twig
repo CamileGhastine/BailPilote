@@ -36,7 +36,7 @@
         </tr>
         <tr>
             <td class="label">Période :</td>
-            <td>{{ payment.period|date('F Y') }}</td>
+            <td>{{ payment.period|month_year_fr }}</td>
         </tr>
     </table>
 
@@ -58,7 +58,7 @@
     <p>
         Je soussigné(e) {{ property.owner.user.firstname }} {{ property.owner.user.lastname }}, bailleur, déclare avoir reçu
         la somme de {{ payment.amount|number_format(2, ',', ' ') }} € au titre du loyer et des charges du logement désigné
-        ci-dessus, pour la période de location du mois de {{ payment.period|date('F Y') }}, et en donne quittance.
+        ci-dessus, pour la période de location du mois de {{ payment.period|month_year_fr }}, et en donne quittance.
     </p>
 
     <p>Fait pour servir et valoir ce que de droit.</p>
