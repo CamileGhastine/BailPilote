@@ -238,14 +238,6 @@
                     <div class="card shadow-sm border-warning">
                         <div class="card-header text-center fw-bold">Notifications</div>
                         <div class="card-body">
-                            <div class="border rounded p-3 mb-3">
-                                <p class="fw-bold mb-1">Quittance de loyer</p>
-                                <p class="small text-muted mb-3">La quittance du mois est à générer.</p>
-                                <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-primary btn-sm flex-grow-1">Générer</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">?</button>
-                                </div>
-                            </div>
                             <div class="border rounded p-3">
                                 <p class="fw-bold mb-1">Rappel de loyer</p>
                                 <p class="small text-muted mb-3">Envoyer un rappel au locataire.</p>
@@ -258,13 +250,65 @@
                     </div>
 
                     <div class="card shadow-sm border-info">
-                        <div class="card-header text-center fw-bold">Documents</div>
-                        <div class="card-body text-center">
-                            <p class="mb-3"><strong>0</strong> nouveau document</p>
-                            <div class="d-flex gap-2">
-                                <a href="#" class="btn btn-outline-primary btn-sm w-100">Voir les documents</a>
-                                <a href="#" class="btn btn-primary btn-sm">+</a>
-                            </div>
+                        <div class="card-header text-center fw-bold">Quittances</div>
+                        <div class="card-body">
+                            {% if property.lease and years|length > 0 %}
+                                <form method="get" action="{{ path('app_owner_show', {id: property.id}) }}" class="mb-3">
+                                    <label for="quittanceYear" class="form-label fw-bold small mb-1">Année</label>
+                                    <select id="quittanceYear" name="year" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        {% for year in years %}
+                                            <option value="{{ year }}" {{ year == selectedYear ? 'selected' : '' }}>{{ year }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            {% endif %}
+                            {% if paymentsSchedule|length > 0 %}
+                                <div class="d-flex flex-column gap-2">
+                                    {% for entry in paymentsSchedule %}
+                                        {% set payment = entry.payment %}
+                                        {% set paid = payment and payment.paid %}
+                                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="fw-bold d-inline {{ paid ? '' : 'd-lg-block'}}">{{ entry.period|month_year_fr }}</span>
+                                                <span class="badge {{ paid ? 'bg-success' : 'bg-secondary' }} ms-2">
+                                                    {{ paid ? 'Payé' : 'Non payé' }}
+                                                </span>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                {% if not paid %}
+                                                    {% if not canMarkPaid %}
+                                                        <button type="button" class="btn btn-outline-success btn-sm" disabled
+                                                                title="Disponible à partir du {{ oldestUnpaidDueDate|date('d/m/Y') }}">
+                                                            Marquer payé
+                                                        </button>
+                                                    {% else %}
+                                                        <form method="post" action="{{ path('app_owner_payment_mark_paid', {leaseId: property.lease.id}) }}">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('mark_paid_' ~ property.lease.id) }}">
+                                                            <input type="hidden" name="clicked_period" value="{{ entry.period|date('Y-m') }}">
+                                                            <button type="submit" class="btn btn-outline-success btn-sm"
+                                                                    title="Marquera le mois de {{ oldestUnpaidPeriod|month_year_fr }} comme payé">
+                                                                Marquer payé
+                                                            </button>
+                                                        </form>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <a href="{{ path('app_owner_payment_quittance', {leaseId: property.lease.id, period: entry.period|date('Y-m')}) }}"
+                                                   class="btn btn-primary btn-sm">
+                                                    {{ paid ? 'Télécharger' : 'Générer' }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-muted text-center mb-0">
+                                    {% if property.lease %}
+                                        Aucune quittance à afficher pour {{ selectedYear }}.
+                                    {% else %}
+                                        Aucune quittance à afficher pour le moment.
+                                    {% endif %}
+                                </p>
+                            {% endif %}
                         </div>
                     </div>
 
